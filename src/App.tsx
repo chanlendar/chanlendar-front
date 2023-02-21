@@ -1,11 +1,13 @@
-import styled from "@emotion/styled";
 import GlobalStyles from "@/GlobalStyles";
+import { Outlet } from "react-router-dom";
+import Header from "@/Header";
 
 function App() {
 	return (
 		<>
 			<GlobalStyles />
-			<div>asdfasf</div>
+			<Header />
+			<Outlet />
 		</>
 	);
 }
