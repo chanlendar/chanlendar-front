@@ -2,14 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import App from "@/App";
-import Login from "@/components/login/Login";
-import Daily from "@/components/daily/Daily";
+import Root from "@/Root";
+import Login from "@/pages/login/Login";
+import Daily from "@/pages/daily/Daily";
 
 const router = createBrowserRouter([
 	{
 		path: "/",
-		element: <App />,
+		element: <Root />,
 		children: [
 			{
 				path: "login",

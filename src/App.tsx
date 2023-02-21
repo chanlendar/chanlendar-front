@@ -1,15 +1,24 @@
-import GlobalStyles from "@/GlobalStyles";
-import { Outlet } from "react-router-dom";
-import Header from "@/Header";
+import { Outlet, Link } from "react-router-dom";
+import { ThemeProvider } from "@emotion/react";
+import { observer } from "mobx-react";
 
-function App() {
+import useStores from "@/hooks/useStore";
+import Header from "@/components/Header";
+
+interface Props {}
+
+const App: React.FC<Props> = () => {
+	const { themeStore } = useStores();
+
 	return (
-		<>
-			<GlobalStyles />
+		<ThemeProvider theme={themeStore.getThemeStyles}>
 			<Header />
+			<Link to={"/"}>Root</Link>
+			<Link to={"/login"}>Login</Link>
+			<Link to={"/daily"}>Daily</Link>
 			<Outlet />
-		</>
+		</ThemeProvider>
 	);
-}
+};
 
-export default App;
+export default observer(App);

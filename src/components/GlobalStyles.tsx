@@ -1,6 +1,9 @@
 import { Global, css } from "@emotion/react";
 
 const style = css`
+	* {
+		font-family: "Spoqa Han Sans Neo", "sans-serif";
+	}
 	html {
 		line-height: 1.15;
 		-webkit-text-size-adjust: 100%;
