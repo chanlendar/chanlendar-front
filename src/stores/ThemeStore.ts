@@ -2,6 +2,21 @@ import { action, computed, makeObservable, observable } from "mobx";
 
 type Theme = "dark" | "light";
 
+export type ThemeStyleForEmotion = {
+	header: {
+		backgroundColor: string;
+		borderBottom: string;
+		title: {
+			color: string;
+		};
+	};
+};
+
+type ThemeStyle = {
+	light: ThemeStyleForEmotion;
+	dark: ThemeStyleForEmotion;
+};
+
 export default class ThemeStore {
 	constructor() {
 		makeObservable(
@@ -20,12 +35,24 @@ export default class ThemeStore {
 
 	currentTheme: Theme = this.initializeCurrentTheme();
 
-	theme = {
+	theme: ThemeStyle = {
 		light: {
-			str: `I'm a light!`,
+			header: {
+				backgroundColor: "#FAFAFA",
+				borderBottom: "#BDBDBD",
+				title: {
+					color: "#000000",
+				},
+			},
 		},
 		dark: {
-			str: `I'm a dark!`,
+			header: {
+				backgroundColor: "#212121",
+				borderBottom: "#BDBDBD",
+				title: {
+					color: "#FAFAFA",
+				},
+			},
 		},
 	};
 
