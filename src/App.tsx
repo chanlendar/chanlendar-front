@@ -1,4 +1,5 @@
-import { Outlet, Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import { ThemeProvider } from "@emotion/react";
 import { observer } from "mobx-react";
 
@@ -9,13 +10,15 @@ interface Props {}
 
 const App: React.FC<Props> = () => {
 	const { themeStore } = useStores();
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		navigate("/login");
+	}, []);
 
 	return (
 		<ThemeProvider theme={themeStore.getThemeStyles}>
 			<Header />
-			<Link to={"/"}>Root</Link>
-			<Link to={"/login"}>Login</Link>
-			<Link to={"/daily"}>Daily</Link>
 			<Outlet />
 		</ThemeProvider>
 	);

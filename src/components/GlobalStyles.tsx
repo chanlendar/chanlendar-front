@@ -3,6 +3,9 @@ import { Global, css } from "@emotion/react";
 const style = css`
 	* {
 		font-family: "Spoqa Han Sans Neo", "sans-serif";
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
 	}
 	html {
 		line-height: 1.15;
@@ -26,7 +29,6 @@ const style = css`
 
 	h1 {
 		font-size: 2em;
-		margin: 0.67em 0;
 	}
 
 	hr {
