@@ -14,6 +14,8 @@ const Login: React.FC<Props> = () => {
 				css={{
 					padding: "30px",
 					backgroundColor: theme.login.backgroundColor,
+					borderRadius: "6px",
+					boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.05)",
 				}}
 			>
 				<div
