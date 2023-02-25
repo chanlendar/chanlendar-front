@@ -1,6 +1,8 @@
 import styled from "@emotion/styled";
 import { useTheme } from "@emotion/react";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
+import useStores from "@/hooks/useStore";
 import Page from "@/components/Page";
 import Google from "@/icons/Google";
 
@@ -8,6 +10,16 @@ interface Props {}
 
 const Login: React.FC<Props> = () => {
 	const theme = useTheme();
+	const { firebaseStore } = useStores();
+
+	const onClick = () => {
+		const provider = new GoogleAuthProvider();
+		signInWithPopup(firebaseStore.getAuth, provider).then((result) => {
+			const credential = GoogleAuthProvider.credentialFromResult(result);
+			console.log(credential, result);
+		});
+	};
+
 	return (
 		<LoginPage>
 			<div
@@ -52,6 +64,7 @@ const Login: React.FC<Props> = () => {
 						alignItems: "center",
 						cursor: "pointer",
 					}}
+					onClick={onClick}
 				>
 					<Google />
 					<span

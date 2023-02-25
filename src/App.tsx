@@ -1,19 +1,18 @@
-import { useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { ThemeProvider } from "@emotion/react";
 import { observer } from "mobx-react";
 
 import useStores from "@/hooks/useStore";
 import Header from "@/components/Header";
+import { useEffect } from "react";
 
 interface Props {}
 
 const App: React.FC<Props> = () => {
-	const { themeStore } = useStores();
-	const navigate = useNavigate();
+	const { themeStore, firebaseStore } = useStores();
 
 	useEffect(() => {
-		navigate("/login");
+		firebaseStore.initializeFirebase();
 	}, []);
 
 	return (

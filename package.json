@@ -50,8 +50,10 @@
 		"@emotion/babel-plugin": "^11.10.5",
 		"@emotion/react": "^11.10.5",
 		"@emotion/styled": "^11.10.5",
+		"firebase": "^9.17.1",
 		"mobx": "^6.8.0",
 		"mobx-react": "^7.6.0",
+		"react-firebase-hooks": "^5.1.1",
 		"react-router-dom": "^6.8.1"
 	}
 }
