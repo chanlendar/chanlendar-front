@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import GlobalStyles from "@/init/GlobalStyles";
 import BaseLayout from "@/init/BaseLayoutWithChildren";
 import RequireAuth from "@/init/RequireAuth";
+import RequireNonUser from "./RequireNonUser";
 import UpdateUserCookieWhenExit from "@/init/UpdateUserCookieWhenExit";
 import Login from "@/pages/login/Login";
 import Daily from "@/pages/daily/Daily";
@@ -42,9 +43,11 @@ const router = createBrowserRouter([
 	{
 		path: "/login",
 		element: (
-			<BaseLayout>
-				<Login />
-			</BaseLayout>
+			<RequireNonUser>
+				<BaseLayout>
+					<Login />
+				</BaseLayout>
+			</RequireNonUser>
 		),
 	},
 	{
