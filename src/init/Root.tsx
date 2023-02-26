@@ -9,6 +9,7 @@ import BaseLayout from "@/init/BaseLayoutWithChildren";
 import RequireAuth from "@/init/RequireAuth";
 import RequireNonUser from "./RequireNonUser";
 import UpdateUserCookieWhenExit from "@/init/UpdateUserCookieWhenExit";
+import TryLoginAutomatically from "@/init/TryLoginAutomatically";
 import Login from "@/pages/login/Login";
 import Daily from "@/pages/daily/Daily";
 import useStores from "@/hooks/useStore";
@@ -23,6 +24,7 @@ const Root = () => {
 	return (
 		<CookiesProvider>
 			<UpdateUserCookieWhenExit />
+			<TryLoginAutomatically />
 			<ThemeProvider theme={themeStore.getThemeStyles}>
 				<GlobalStyles />
 				<RouterProvider router={router} />
