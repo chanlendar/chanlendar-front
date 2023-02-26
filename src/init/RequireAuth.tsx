@@ -1,11 +1,12 @@
-import useStores from "@/hooks/useStore";
-import { validateNull } from "@/utils";
 import { useCookies } from "react-cookie";
 import { Navigate } from "react-router-dom";
 
+import useStores from "@/hooks/useStore";
+import { validateNull } from "@/utils";
+
 interface Props {}
 
-const Auth = ({ children }: React.PropsWithChildren<Props>) => {
+const RequireAuth = ({ children }: React.PropsWithChildren<Props>) => {
 	const { profileStore } = useStores();
 	const [cookies] = useCookies(["user"]);
 
@@ -24,4 +25,4 @@ const Auth = ({ children }: React.PropsWithChildren<Props>) => {
 	return children as JSX.Element;
 };
 
-export default Auth;
+export default RequireAuth;
