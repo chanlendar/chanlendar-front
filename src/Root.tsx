@@ -9,7 +9,11 @@ function Root() {
 	return (
 		<>
 			<GlobalStyles />
-			<Provider firebaseStore={stores.firebaseStore} themeStore={stores.themeStore}>
+			<Provider
+				profileStore={stores.profileStore}
+				firebaseStore={stores.firebaseStore}
+				themeStore={stores.themeStore}
+			>
 				<App />
 			</Provider>
 		</>

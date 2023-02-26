@@ -2,6 +2,8 @@ import styled from "@emotion/styled";
 import { useTheme } from "@emotion/react";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
+import { validateNull } from "@/utils";
+import { updateMyProfile } from "@/apis/users";
 import useStores from "@/hooks/useStore";
 import Page from "@/components/Page";
 import Google from "@/icons/Google";
@@ -10,14 +12,20 @@ interface Props {}
 
 const Login: React.FC<Props> = () => {
 	const theme = useTheme();
-	const { firebaseStore } = useStores();
+	const { firebaseStore, profileStore } = useStores();
 
-	const onClick = () => {
+	const onClick = async () => {
 		const provider = new GoogleAuthProvider();
-		signInWithPopup(firebaseStore.getAuth, provider).then((result) => {
-			const credential = GoogleAuthProvider.credentialFromResult(result);
-			console.log(credential, result);
-		});
+		const {
+			user: { email, displayName, uid },
+		} = await signInWithPopup(firebaseStore.getAuth, provider);
+
+		if (validateNull(email, displayName, uid)) {
+			await updateMyProfile(email!, displayName!, uid);
+			profileStore.setProfile(email!, displayName!, uid);
+			// 쿠키 설정, samesite, http 속성
+			// email, name, uid 필요
+		}
 	};
 
 	return (
