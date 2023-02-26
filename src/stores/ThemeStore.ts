@@ -10,6 +10,15 @@ export type ThemeStyleForEmotion = {
 			color: string;
 		};
 	};
+	body: {
+		backgroundColor: string;
+	};
+	login: {
+		backgroundColor: string;
+		welcomTextColor: string;
+		buttonBorderColor: string;
+		buttonTextColor: string;
+	};
 };
 
 type ThemeStyle = {
@@ -44,6 +53,15 @@ export default class ThemeStore {
 					color: "#000000",
 				},
 			},
+			body: {
+				backgroundColor: "#FAFAFA",
+			},
+			login: {
+				backgroundColor: "#ffffff",
+				welcomTextColor: "#000000",
+				buttonBorderColor: "#E8EAF6",
+				buttonTextColor: "#424242",
+			},
 		},
 		dark: {
 			header: {
@@ -52,6 +70,15 @@ export default class ThemeStore {
 				title: {
 					color: "#FAFAFA",
 				},
+			},
+			body: {
+				backgroundColor: "#212121",
+			},
+			login: {
+				backgroundColor: "#424242",
+				welcomTextColor: "#FAFAFA",
+				buttonBorderColor: "#9E9E9E",
+				buttonTextColor: "#FAFAFA",
 			},
 		},
 	};
