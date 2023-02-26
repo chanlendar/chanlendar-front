@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { useTheme } from "@emotion/react";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { useCookies } from "react-cookie";
 
 import { validateNull } from "@/utils";
 import { updateMyProfile } from "@/apis/users";
@@ -13,6 +14,7 @@ interface Props {}
 const Login: React.FC<Props> = () => {
 	const theme = useTheme();
 	const { firebaseStore, profileStore } = useStores();
+	const [_, setCookie] = useCookies(["user"]);
 
 	const onClick = async () => {
 		const provider = new GoogleAuthProvider();
@@ -23,8 +25,20 @@ const Login: React.FC<Props> = () => {
 		if (validateNull(email, displayName, uid)) {
 			await updateMyProfile(email!, displayName!, uid);
 			profileStore.setProfile(email!, displayName!, uid);
-			// 쿠키 설정, samesite, http 속성
-			// email, name, uid 필요
+			setCookie(
+				"user",
+				{
+					email,
+					name: displayName,
+					uid,
+				},
+				{
+					path: "/",
+					sameSite: "strict",
+					secure: true,
+					maxAge: 3600 * 24,
+				},
+			);
 		}
 	};
 
