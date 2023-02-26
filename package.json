@@ -30,6 +30,7 @@
 		"@storybook/react": "^6.5.16",
 		"@storybook/testing-library": "^0.0.13",
 		"@types/react": "^18.0.27",
+		"@types/react-beforeunload": "^2.1.1",
 		"@types/react-dom": "^18.0.10",
 		"@vitejs/plugin-react": "^3.0.1",
 		"babel-loader": "^8.3.0",
@@ -53,6 +54,7 @@
 		"firebase": "^9.17.1",
 		"mobx": "^6.8.0",
 		"mobx-react": "^7.6.0",
+		"react-beforeunload": "^2.5.3",
 		"react-cookie": "^4.1.1",
 		"react-firebase-hooks": "^5.1.1",
 		"react-router-dom": "^6.8.1"
