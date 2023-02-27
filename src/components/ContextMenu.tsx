@@ -1,3 +1,4 @@
+// IMPORTANT: 컨텍스트 메뉴 show 컨트롤은 children에서 해줘야함
 import useOnClickOutside from "@/hooks/useOnClickOutside";
 import { css } from "@emotion/react";
 import { useRef } from "react";

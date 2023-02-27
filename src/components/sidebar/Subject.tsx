@@ -16,7 +16,7 @@ const Subject = ({
 }: React.PropsWithChildren<Props>) => {
 	const theme = useTheme();
 	return (
-		<div
+		<li
 			onClick={onClick}
 			onContextMenu={onContextMenu}
 			onMouseEnter={onMouseEnter}
@@ -41,7 +41,7 @@ const Subject = ({
 			`}
 		>
 			{children}
-		</div>
+		</li>
 	);
 };
 
