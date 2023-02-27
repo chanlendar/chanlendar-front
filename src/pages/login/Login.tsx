@@ -2,8 +2,9 @@ import styled from "@emotion/styled";
 import { useTheme } from "@emotion/react";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
-import { validateNull } from "@/utils";
+import { hasNull } from "@/utils";
 import { updateMyProfile } from "@/apis/users";
 import useStores from "@/hooks/useStore";
 import Page from "@/components/Page";
@@ -15,6 +16,7 @@ const Login: React.FC<Props> = () => {
 	const theme = useTheme();
 	const { firebaseStore, profileStore } = useStores();
 	const [_, setCookie] = useCookies(["user"]);
+	const navigate = useNavigate();
 
 	const onClick = async () => {
 		const provider = new GoogleAuthProvider();
@@ -22,7 +24,7 @@ const Login: React.FC<Props> = () => {
 			user: { email, displayName, uid },
 		} = await signInWithPopup(firebaseStore.getAuth, provider);
 
-		if (validateNull(email, displayName, uid)) {
+		if (!hasNull(email, displayName, uid)) {
 			await updateMyProfile(email!, displayName!, uid);
 			profileStore.setProfile(email!, displayName!, uid);
 			setCookie(
@@ -40,6 +42,10 @@ const Login: React.FC<Props> = () => {
 				},
 			);
 		}
+
+		navigate("/daily", {
+			replace: true,
+		});
 	};
 
 	return (

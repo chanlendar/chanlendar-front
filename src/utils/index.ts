@@ -1,9 +1,9 @@
-function validateNull(...datas: any[]) {
+function hasNull(...datas: any[]) {
 	datas.forEach((v) => {
-		if (!v) return false;
+		if (!v) return true;
 	});
 
-	return true;
+	return false;
 }
 
-export { validateNull };
+export { hasNull };
