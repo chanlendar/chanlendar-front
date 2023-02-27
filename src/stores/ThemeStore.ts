@@ -56,15 +56,18 @@ export type ThemeStyleForEmotion = {
 			color: string;
 		};
 	};
+
 	body: {
 		backgroundColor: string;
 	};
+
 	login: {
 		backgroundColor: string;
 		welcomTextColor: string;
 		buttonBorderColor: string;
 		buttonTextColor: string;
 	};
+
 	sidebar: {
 		backgroundColor: string;
 		subject: {
@@ -81,6 +84,17 @@ export type ThemeStyleForEmotion = {
 			backgroundColor: string;
 			color: string;
 		};
+	};
+
+	modal: {
+		backgroundColor: string;
+		titleColor: string;
+		inputBackgroundColor: string;
+		cancelButtonColor: string;
+		cancelButtonBackgroundColor: string;
+		yesButtonColor: string;
+		yesButtonBackgroundColor: string;
+		borderColor: string;
 	};
 };
 
@@ -119,6 +133,16 @@ const themeStyle: ThemeStyle = {
 				color: "#FFFFFF",
 			},
 		},
+		modal: {
+			backgroundColor: "#FAFAFA",
+			titleColor: "#000000",
+			inputBackgroundColor: "#EEEEEE",
+			cancelButtonColor: "#616161",
+			cancelButtonBackgroundColor: "#F5F5F5",
+			yesButtonColor: "#212121",
+			yesButtonBackgroundColor: "#BDBDBD",
+			borderColor: "#BDBDBD",
+		},
 	},
 	dark: {
 		header: {
@@ -153,6 +177,16 @@ const themeStyle: ThemeStyle = {
 				backgroundColor: "#EEEEEE",
 				color: "#424242",
 			},
+		},
+		modal: {
+			backgroundColor: "#424242",
+			titleColor: "#F5F5F5",
+			inputBackgroundColor: "#757575",
+			cancelButtonColor: "#EEEEEE",
+			cancelButtonBackgroundColor: "#757575",
+			yesButtonColor: "#212121",
+			yesButtonBackgroundColor: "#FAFAFA",
+			borderColor: "#BDBDBD",
 		},
 	},
 };

@@ -1,9 +1,11 @@
 import Subject from "./Subject";
 
-interface Props {}
+interface Props {
+	onClick: VoidFunction;
+}
 
-const CreateButton: React.FC<Props> = () => {
-	return <Subject>+</Subject>;
+const CreateButton: React.FC<Props> = ({ onClick }) => {
+	return <Subject onClick={onClick}>+</Subject>;
 };
 
 export default CreateButton;
