@@ -2,9 +2,10 @@ import styled from "@emotion/styled";
 import { css, useTheme } from "@emotion/react";
 import { MouseEvent, useState } from "react";
 
+import ContextMenu from "@/components/ContextMenu";
 import CreateButton from "@/components/sidebar/CreateButton";
-import ContextMenu from "../ContextMenu";
-import Subject from "./Subject";
+import Subject from "@/components/sidebar/Subject";
+import HoveredTitle from "@/components/sidebar/HoveredTitle";
 
 const initialContextMenu = {
 	show: false,
@@ -47,11 +48,25 @@ const Sidebar: React.FC<Props> = () => {
 		},
 	]);
 
+	const [id, setId] = useState(0);
+	const onMouseEnter = (id: number) => () => {
+		setId(id);
+	};
+	const onMouseLeave = () => {
+		setId(0);
+	};
+
 	return (
 		<Container>
 			{subjects.map((s) => (
-				<Subject key={s.id} onContextMenu={onContextMenu}>
+				<Subject
+					key={s.id}
+					onContextMenu={onContextMenu}
+					onMouseEnter={onMouseEnter(s.id)}
+					onMouseLeave={onMouseLeave}
+				>
 					{s.name[0]}
+					<HoveredTitle show={s.id === id}>{s.name}</HoveredTitle>
 				</Subject>
 			))}
 			<CreateButton />

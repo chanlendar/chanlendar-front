@@ -77,6 +77,10 @@ export type ThemeStyleForEmotion = {
 			borderColor: string;
 			changeNameColor: string;
 		};
+		hoveredTitle: {
+			backgroundColor: string;
+			color: string;
+		};
 	};
 };
 
@@ -110,6 +114,10 @@ const themeStyle: ThemeStyle = {
 				borderColor: "#E0E0E0",
 				changeNameColor: "#000000",
 			},
+			hoveredTitle: {
+				backgroundColor: "#424242",
+				color: "#FFFFFF",
+			},
 		},
 	},
 	dark: {
@@ -140,6 +148,10 @@ const themeStyle: ThemeStyle = {
 				backgroundColor: "#424242",
 				borderColor: "#757575",
 				changeNameColor: "#EEEEEE",
+			},
+			hoveredTitle: {
+				backgroundColor: "#EEEEEE",
+				color: "#424242",
 			},
 		},
 	},
