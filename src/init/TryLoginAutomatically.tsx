@@ -1,19 +1,18 @@
 import { useEffect } from "react";
-import { useCookies } from "react-cookie";
 
 import useStores from "@/hooks/useStore";
+import useCookie from "@/hooks/useCookie";
 
 interface Props {}
 
 const TryLoginAutomatically: React.FC<Props> = () => {
-	const [cookies, setCookie] = useCookies(["user"]);
 	const { profileStore } = useStores();
+	const [getCookie, setCookie] = useCookie();
 
 	useEffect(() => {
-		if (cookies["user"]) {
-			const { email, name, uid } = cookies["user"];
+		if (getCookie("user")) {
+			const { email, name, uid } = getCookie("user");
 			profileStore.setProfile(email, name, uid);
-
 			setCookie(
 				"user",
 				{
