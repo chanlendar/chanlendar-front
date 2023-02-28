@@ -1,7 +1,7 @@
 import { action, computed, makeObservable, observable } from "mobx";
 import { Auth, getAuth } from "firebase/auth";
 import { Firestore, getFirestore } from "firebase/firestore/lite";
-import { FirebaseApp, initializeApp } from "firebase/app";
+import { FirebaseApp, getApp, initializeApp } from "firebase/app";
 
 const firebaseConfig = {
 	apiKey: "AIzaSyDOkniQX75iO6K_fz948T40zN4PZU11Hl4",
@@ -15,34 +15,35 @@ const firebaseConfig = {
 
 export default class FirebaseStore {
 	constructor() {
-		makeObservable(this, {
-			app: observable,
-			auth: observable,
-			initializeFirebase: action,
-			getApp: computed,
-			getAuth: computed,
-		});
+		// makeObservable(this, {
+		// 	app: observable,
+		// 	auth: observable,
+		// 	initializeFirebase: action,
+		// 	getApp: computed,
+		// 	getAuth: computed,
+		// });
 	}
 
-	app: any;
-	auth: any;
-	firestore: any;
+	// app: any;
+	// auth: any;
+	// firestore: any;
 
-	initializeFirebase() {
-		this.app = initializeApp(firebaseConfig);
-		this.auth = getAuth(this.app);
-		this.firestore = getFirestore(this.app);
-	}
+	// initializeFirebase() {
+	// 	// this.app = initializeApp(firebaseConfig);
+	// 	this.app = getApp();
+	// 	this.auth = getAuth(this.app);
+	// 	this.firestore = getFirestore(this.app);
+	// }
 
-	get getApp() {
-		return this.app as FirebaseApp;
-	}
+	// get getApp() {
+	// 	return this.app as FirebaseApp;
+	// }
 
-	get getAuth() {
-		return this.auth as Auth;
-	}
+	// get getAuth() {
+	// 	return this.auth as Auth;
+	// }
 
-	get getFireStore() {
-		return this.firestore as Firestore;
-	}
+	// get getFireStore() {
+	// 	return this.firestore as Firestore;
+	// }
 }

@@ -1,6 +1,5 @@
 import { ThemeProvider } from "@emotion/react";
 import { observer } from "mobx-react";
-import { useEffect } from "react";
 import { CookiesProvider } from "react-cookie";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -15,11 +14,7 @@ import Daily from "@/pages/daily/Daily";
 import useStores from "@/hooks/useStore";
 
 const Root = () => {
-	const { themeStore, firebaseStore } = useStores();
-
-	useEffect(() => {
-		firebaseStore.initializeFirebase();
-	}, []);
+	const { themeStore } = useStores();
 
 	return (
 		<CookiesProvider>

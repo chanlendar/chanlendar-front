@@ -1,6 +1,9 @@
 import styled from "@emotion/styled";
 import { css, Theme, useTheme } from "@emotion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
+import { observer } from "mobx-react-lite";
+import { v4 as uuidv4 } from "uuid";
 
 import ContextMenu from "@/components/ContextMenu";
 import CreateButton from "@/components/sidebar/CreateButton";
@@ -10,48 +13,99 @@ import Modal from "@/components/Modal";
 import useContextMenu from "@/hooks/useContextMenu";
 import useInput from "@/hooks/useInput";
 import useModal from "@/hooks/useModal";
+import useStores from "@/hooks/useStore";
+
+import {
+	changeSubjectName,
+	createSubject,
+	deleteSubject,
+	getUserSubjects,
+} from "@/apis/subjects";
 
 interface Props {}
 
 const Sidebar: React.FC<Props> = () => {
 	const theme = useTheme();
+	const [cookies] = useCookies(["user"]);
+	const { subjectStore } = useStores();
 
-	// useContextMenu Hook
-	const [contextMenu, _, onContextMenu, closeContextMenu] = useContextMenu();
-	//******* 가짜 Subject 용 *******
-	const [subjects, setSubjects] = useState([
-		{ id: 1, name: "Abcd" },
-		{
-			id: 2,
-			name: "장찬희",
-		},
-		{
-			id: 3,
-			name: "Korea National Open Universicy",
-		},
-		{
-			id: 4,
-			name: "OnXi",
-		},
-	]);
+	useEffect(() => {
+		getUserSubjects(cookies["user"]?.uid).then((r) => {
+			subjectStore.getSubjectsFromQuerySnapshot(r);
+		});
+	}, []);
 
-	const [id, setId] = useState(0);
-	const onMouseEnter = (id: number) => () => {
+	const onYesButtonClick = () => {
+		(async () => {
+			const id = uuidv4();
+			await createSubject(cookies["user"]?.uid, input, id);
+			subjectStore.addSubject(input, id);
+			setInput("");
+			setModalOpen(false);
+		})();
+	};
+
+	const onCancelButtonClick = () => {
+		setInput("");
+		setModalOpen(false);
+	};
+
+	const [id, setId] = useState("");
+	const [idToModify, setIdToModify] = useState("");
+	const onMouseEnter = (id: string) => () => {
 		setId(id);
+		setIdToModify(id);
 	};
 	const onMouseLeave = () => {
-		setId(0);
+		setId("");
 	};
 
-	//****** 모달용 */
+	const [contextMenu, _, onContextMenu, closeContextMenu] = useContextMenu();
+
+	const [input, setInput, onInputChange] = useInput("");
+
 	const [isModalOpen, setModalOpen, onClose] = useModal(false, () => {
 		setModalOpen(false);
+		setInput("");
 	});
-	const [input, setInput, onInputChange] = useInput("");
+
+	const [isEditSubjectOpen, setEditSubjectOpen, onEditSubjectClose] = useModal(
+		false,
+		() => {
+			setEditSubjectOpen(false);
+			setInput("");
+		},
+	);
+
+	const onEditSubjectClick = () => {
+		setEditSubjectOpen(true);
+	};
+
+	const onEditSubjectCancel = () => {
+		setEditSubjectOpen(false);
+		setInput("");
+	};
+
+	const onChangeSubjectName = () => {
+		changeSubjectName(cookies["user"]?.uid, input, idToModify);
+		subjectStore.changeSubjectName(input, idToModify);
+		setEditSubjectOpen(false);
+		setInput("");
+		setIdToModify("");
+	};
+
+	const onDeleteSubjectClick = () => {
+		deleteSubject(cookies["user"]?.uid, idToModify);
+		subjectStore.deleteSubject(idToModify);
+		setEditSubjectOpen(false);
+		setInput("");
+		setIdToModify("");
+		closeContextMenu();
+	};
 
 	return (
 		<Container>
-			{subjects.map((s) => (
+			{subjectStore.subjects.map((s) => (
 				<Subject
 					key={s.id}
 					onContextMenu={onContextMenu}
@@ -71,8 +125,18 @@ const Sidebar: React.FC<Props> = () => {
 				show={contextMenu.show}
 			>
 				<ContextMenuItemContainer>
-					<div css={[contextItemBaseStyles, changeNameStyles(theme)]}>이름 변경</div>
-					<div css={[contextItemBaseStyles, deleteSubjectStyles]}>주제 삭제</div>
+					<div
+						css={[contextItemBaseStyles, changeNameStyles(theme)]}
+						onClick={onEditSubjectClick}
+					>
+						이름 변경
+					</div>
+					<div
+						css={[contextItemBaseStyles, deleteSubjectStyles]}
+						onClick={onDeleteSubjectClick}
+					>
+						주제 삭제
+					</div>
 				</ContextMenuItemContainer>
 			</ContextMenu>
 			<Modal
@@ -80,8 +144,8 @@ const Sidebar: React.FC<Props> = () => {
 				title="어떤 주제인가요?"
 				onRequestClose={onClose}
 				yesButtonText="생성"
-				yesButtonFunction={() => console.log("asdf")}
-				cancelButtonFunction={() => console.log("qwer")}
+				yesButtonFunction={onYesButtonClick}
+				cancelButtonFunction={onCancelButtonClick}
 			>
 				<input
 					type="text"
@@ -90,6 +154,28 @@ const Sidebar: React.FC<Props> = () => {
 						border: none;
 						background-color: ${theme.modal.inputBackgroundColor};
 						padding: 10px 10px;
+						width: 100%;
+					`}
+					value={input}
+					onChange={onInputChange}
+				/>
+			</Modal>
+			<Modal
+				isOpen={isEditSubjectOpen}
+				title="어떤 주제로 변경하시는 건가요?"
+				onRequestClose={onEditSubjectClose}
+				yesButtonText="변경"
+				yesButtonFunction={onChangeSubjectName}
+				cancelButtonFunction={onEditSubjectCancel}
+			>
+				<input
+					type="text"
+					css={css`
+						border-radius: 4px;
+						border: none;
+						background-color: ${theme.modal.inputBackgroundColor};
+						padding: 10px 10px;
+						width: 100%;
 					`}
 					value={input}
 					onChange={onInputChange}
@@ -146,4 +232,4 @@ const deleteSubjectStyles = css`
 	color: #e53935;
 `;
 
-export default Sidebar;
+export default observer(Sidebar);
