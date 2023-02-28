@@ -1,14 +1,13 @@
+import useCookie from "@/hooks/useCookie";
 import { Beforeunload } from "react-beforeunload";
-import { useCookies } from "react-cookie";
 
 interface Props {}
 
 const UpdateUserCookieWhenExit: React.FC<Props> = () => {
-	const [cookies, setCookie] = useCookies(["user"]);
-
+	const [getCookie, setCookie] = useCookie();
 	const onBeforeUnload = () => {
-		if (cookies["user"]) {
-			const user = cookies["user"];
+		if (getCookie("user")) {
+			const user = getCookie("user");
 
 			setCookie(
 				"user",

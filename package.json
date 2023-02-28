@@ -61,6 +61,7 @@
 		"react-firebase-hooks": "^5.1.1",
 		"react-modal": "^3.16.1",
 		"react-router-dom": "^6.8.1",
+		"universal-cookie": "^4.0.4",
 		"uuid": "^9.0.0"
 	}
 }

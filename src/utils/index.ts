@@ -1,4 +1,5 @@
 import { Timestamp } from "firebase/firestore";
+import Cookies, { CookieSetOptions } from "universal-cookie";
 
 function hasNull(...datas: any[]) {
 	datas.forEach((v) => {
@@ -21,4 +22,25 @@ function insertUpdatedAt() {
 	};
 }
 
-export { hasNull, insertCreateAtAndUpdatedAt, insertUpdatedAt };
+const cookies = new Cookies();
+
+function getCookie(name: string) {
+	return cookies.get(name);
+}
+
+function setCookie(name: string, value: any, options: CookieSetOptions = {}) {
+	cookies.set(name, value, options);
+}
+
+function deleteCoookie(name: string) {
+	cookies.remove(name);
+}
+
+export {
+	hasNull,
+	insertCreateAtAndUpdatedAt,
+	insertUpdatedAt,
+	getCookie,
+	setCookie,
+	deleteCoookie,
+};
