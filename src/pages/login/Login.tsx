@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { useTheme } from "@emotion/react";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
@@ -14,7 +14,7 @@ interface Props {}
 
 const Login: React.FC<Props> = () => {
 	const theme = useTheme();
-	const { firebaseStore, profileStore } = useStores();
+	const { profileStore } = useStores();
 	const [_, setCookie] = useCookies(["user"]);
 	const navigate = useNavigate();
 
@@ -22,7 +22,7 @@ const Login: React.FC<Props> = () => {
 		const provider = new GoogleAuthProvider();
 		const {
 			user: { email, displayName, uid },
-		} = await signInWithPopup(firebaseStore.getAuth, provider);
+		} = await signInWithPopup(getAuth(), provider);
 
 		if (!hasNull(email, displayName, uid)) {
 			await updateMyProfile(email!, displayName!, uid);

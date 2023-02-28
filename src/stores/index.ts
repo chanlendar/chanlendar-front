@@ -1,15 +1,15 @@
 import ThemeStore from "@/stores/ThemeStore";
-import FirebaseStore from "@/stores/FirebaseStore";
 import ProfileStore from "@/stores/ProfileStore";
+import SubjectStore from "@/stores/SubjectStore";
 
 export default {
 	themeStore: new ThemeStore(),
-	firebaseStore: new FirebaseStore(),
 	profileStore: new ProfileStore(),
+	subjectStore: new SubjectStore(),
 };
 
 export type Stores = {
 	themeStore: ThemeStore;
-	firebaseStore: FirebaseStore;
 	profileStore: ProfileStore;
+	subjectStore: SubjectStore;
 };

@@ -8,8 +8,8 @@ const App = () => {
 	return (
 		<Provider
 			profileStore={stores.profileStore}
-			firebaseStore={stores.firebaseStore}
 			themeStore={stores.themeStore}
+			subjectStore={stores.subjectStore}
 		>
 			<Root />
 		</Provider>

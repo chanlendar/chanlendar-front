@@ -1,11 +1,10 @@
 import { ThemeProvider } from "@emotion/react";
 import { observer } from "mobx-react";
-import { useEffect } from "react";
 import { CookiesProvider } from "react-cookie";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import GlobalStyles from "@/init/GlobalStyles";
-import BaseLayout from "@/init/BaseLayoutWithChildren";
+import BaseLayoutWithChildren from "@/init/BaseLayoutWithChildren";
 import RequireAuth from "@/init/RequireAuth";
 import RequireNonUser from "./RequireNonUser";
 import UpdateUserCookieWhenExit from "@/init/UpdateUserCookieWhenExit";
@@ -15,11 +14,7 @@ import Daily from "@/pages/daily/Daily";
 import useStores from "@/hooks/useStore";
 
 const Root = () => {
-	const { themeStore, firebaseStore } = useStores();
-
-	useEffect(() => {
-		firebaseStore.initializeFirebase();
-	}, []);
+	const { themeStore } = useStores();
 
 	return (
 		<CookiesProvider>
@@ -38,7 +33,7 @@ const router = createBrowserRouter([
 		path: "/",
 		element: (
 			<RequireAuth>
-				<BaseLayout>here is the base</BaseLayout>
+				<BaseLayoutWithChildren>here is the base</BaseLayoutWithChildren>
 			</RequireAuth>
 		),
 	},
@@ -46,18 +41,20 @@ const router = createBrowserRouter([
 		path: "/login",
 		element: (
 			<RequireNonUser>
-				<BaseLayout>
+				<BaseLayoutWithChildren>
 					<Login />
-				</BaseLayout>
+				</BaseLayoutWithChildren>
 			</RequireNonUser>
 		),
 	},
 	{
 		path: "/daily",
 		element: (
-			<BaseLayout>
-				<Daily />
-			</BaseLayout>
+			<RequireAuth>
+				<BaseLayoutWithChildren>
+					<Daily />
+				</BaseLayoutWithChildren>
+			</RequireAuth>
 		),
 	},
 ]);

@@ -1,10 +1,10 @@
+import { insertCreateAtAndUpdatedAt, insertUpdatedAt } from "@/utils";
 import {
 	getFirestore,
 	doc,
 	getDoc,
 	setDoc,
 	updateDoc,
-	Timestamp,
 	DocumentReference,
 	DocumentData,
 } from "firebase/firestore";
@@ -19,7 +19,7 @@ async function updateMyProfile(email: string, name: string, uid: string) {
 
 	if (user.exists()) {
 		await updateDoc(docRef, {
-			lastLoginAt: Timestamp.fromMillis(Date.now()),
+			...insertUpdatedAt(),
 		});
 	} else {
 		await saveMyProfile(email, name, uid, docRef);
@@ -36,8 +36,7 @@ async function saveMyProfile(
 		email,
 		name,
 		uid,
-		createdAt: Timestamp.fromMillis(Date.now()),
-		lastLoginAt: Timestamp.fromMillis(Date.now()),
+		...insertCreateAtAndUpdatedAt(),
 	});
 }
 
