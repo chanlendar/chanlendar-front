@@ -88,6 +88,11 @@ export type ThemeStyleForEmotion = {
 
 	daily: {
 		backgroundColor: string;
+		item: {
+			borderColor: string;
+			color: string;
+			finishedColor: string;
+		};
 	};
 
 	button: {
@@ -145,6 +150,11 @@ const themeStyle: ThemeStyle = {
 		},
 		daily: {
 			backgroundColor: "#EEEEEE",
+			item: {
+				borderColor: "#000000",
+				color: "#000000",
+				finishedColor: "#757575",
+			},
 		},
 		button: {
 			textColor: "#000000",
@@ -198,6 +208,11 @@ const themeStyle: ThemeStyle = {
 		},
 		daily: {
 			backgroundColor: "#424242",
+			item: {
+				borderColor: "#FAFAFA",
+				color: "#FAFAFA",
+				finishedColor: "#929292",
+			},
 		},
 		button: {
 			textColor: "#FAFAFA",
