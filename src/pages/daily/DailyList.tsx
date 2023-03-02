@@ -1,15 +1,16 @@
-import { css, Theme, useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
 
 import DailyItem from "@/pages/daily/DailyItem";
-import ContextMenu from "@/components/ContextMenu";
+import ContextMenu from "@/components/contextMenu/ContextMenu";
+import ContextMenuItem from "@/components/contextMenu/ContextMenuItem";
+
 import useContextMenu from "@/hooks/useContextMenu";
 
 interface Props {}
 
 const DailyList: React.FC<Props> = () => {
 	const [contextMenu, _, onContextMenu, closeContextMenu] = useContextMenu();
-	const theme = useTheme();
+
 	return (
 		<Layout>
 			<Title>Title</Title>
@@ -32,10 +33,8 @@ const DailyList: React.FC<Props> = () => {
 					closeContextMenu={closeContextMenu}
 					closeIfOutsideClicked
 				>
-					<ContextMenuItemContainer>
-						<div css={[contextItemBaseStyles, changeNameStyles(theme)]}>변경</div>
-						<div css={[contextItemBaseStyles, deleteSubjectStyles]}>삭제</div>
-					</ContextMenuItemContainer>
+					<ContextMenuItem>변경</ContextMenuItem>
+					<ContextMenuItem alert>삭제</ContextMenuItem>
 				</ContextMenu>
 			</List>
 		</Layout>
@@ -104,36 +103,6 @@ const List = styled.div`
 	& > div {
 		margin-bottom: 16px;
 	}
-`;
-
-const ContextMenuItemContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	border-radius: 4px;
-
-	border: 1px solid ${({ theme }) => theme.sidebar.contextMenu.borderColor};
-
-	& > div:not(:first) {
-		border-top: 1px solid ${({ theme }) => theme.sidebar.contextMenu.borderColor};
-	}
-
-	background-color: ${({ theme }) => theme.sidebar.contextMenu.backgroundColor};
-	user-select: none;
-	cursor: pointer;
-`;
-
-const contextItemBaseStyles = css`
-	padding: 10px;
-	font-weight: bold;
-	font-size: 14px;
-`;
-
-const changeNameStyles = (theme: Theme) => css`
-	color: ${theme.sidebar.contextMenu.changeNameColor};
-`;
-
-const deleteSubjectStyles = css`
-	color: #e53935;
 `;
 
 export default DailyList;

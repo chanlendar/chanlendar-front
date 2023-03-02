@@ -5,7 +5,7 @@ import { useCookies } from "react-cookie";
 import { observer } from "mobx-react-lite";
 import { v4 as uuidv4 } from "uuid";
 
-import ContextMenu from "@/components/ContextMenu";
+import ContextMenu from "@/components/contextMenu/ContextMenu";
 import CreateButton from "@/components/sidebar/CreateButton";
 import Subject from "@/components/sidebar/Subject";
 import HoveredTitle from "@/components/sidebar/HoveredTitle";
@@ -21,6 +21,7 @@ import {
 	deleteSubject,
 	getUserSubjects,
 } from "@/apis/subjects";
+import ContextMenuItem from "../contextMenu/ContextMenuItem";
 
 interface Props {}
 
@@ -124,20 +125,10 @@ const Sidebar: React.FC<Props> = () => {
 				closeContextMenu={closeContextMenu}
 				show={contextMenu.show}
 			>
-				<ContextMenuItemContainer>
-					<div
-						css={[contextItemBaseStyles, changeNameStyles(theme)]}
-						onClick={onEditSubjectClick}
-					>
-						이름 변경
-					</div>
-					<div
-						css={[contextItemBaseStyles, deleteSubjectStyles]}
-						onClick={onDeleteSubjectClick}
-					>
-						주제 삭제
-					</div>
-				</ContextMenuItemContainer>
+				<ContextMenuItem onClick={onEditSubjectClick}>이름 변경</ContextMenuItem>
+				<ContextMenuItem alert onClick={onDeleteSubjectClick}>
+					주제 삭제
+				</ContextMenuItem>
 			</ContextMenu>
 			<Modal
 				isOpen={isModalOpen}
@@ -200,36 +191,6 @@ const Container = styled.ul`
 	& > li {
 		margin-top: 12px;
 	}
-`;
-
-const ContextMenuItemContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	border-radius: 4px;
-
-	border: 1px solid ${({ theme }) => theme.sidebar.contextMenu.borderColor};
-
-	& > div:not(:first) {
-		border-top: 1px solid ${({ theme }) => theme.sidebar.contextMenu.borderColor};
-	}
-
-	background-color: ${({ theme }) => theme.sidebar.contextMenu.backgroundColor};
-	user-select: none;
-	cursor: pointer;
-`;
-
-const contextItemBaseStyles = css`
-	padding: 10px;
-	font-weight: bold;
-	font-size: 14px;
-`;
-
-const changeNameStyles = (theme: Theme) => css`
-	color: ${theme.sidebar.contextMenu.changeNameColor};
-`;
-
-const deleteSubjectStyles = css`
-	color: #e53935;
 `;
 
 export default observer(Sidebar);

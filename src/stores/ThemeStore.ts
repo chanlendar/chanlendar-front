@@ -76,11 +76,6 @@ export type ThemeStyleForEmotion = {
 			hoverColor: string;
 			hoverBackgroundColor: string;
 		};
-		contextMenu: {
-			backgroundColor: string;
-			borderColor: string;
-			changeNameColor: string;
-		};
 		hoveredTitle: {
 			backgroundColor: string;
 			color: string;
@@ -109,6 +104,12 @@ export type ThemeStyleForEmotion = {
 		textColor: string;
 		borderColor: string;
 		backgroundColor: string;
+	};
+
+	contextMenu: {
+		backgroundColor: string;
+		borderColor: string;
+		color: string;
 	};
 
 	modal: {
@@ -149,11 +150,6 @@ const themeStyle: ThemeStyle = {
 				hoverColor: "#FAFAFA",
 				hoverBackgroundColor: "#000000",
 			},
-			contextMenu: {
-				backgroundColor: "#F5F5F5",
-				borderColor: "#E0E0E0",
-				changeNameColor: "#000000",
-			},
 			hoveredTitle: {
 				backgroundColor: "#424242",
 				color: "#FFFFFF",
@@ -180,6 +176,11 @@ const themeStyle: ThemeStyle = {
 			textColor: "#000000",
 			borderColor: "#BDBDBD",
 			backgroundColor: "transparent",
+		},
+		contextMenu: {
+			backgroundColor: "#F5F5F5",
+			borderColor: "#E0E0E0",
+			color: "#000000",
 		},
 		modal: {
 			backgroundColor: "#FAFAFA",
@@ -217,11 +218,6 @@ const themeStyle: ThemeStyle = {
 				hoverColor: "#212121",
 				hoverBackgroundColor: "#FAFAFA",
 			},
-			contextMenu: {
-				backgroundColor: "#424242",
-				borderColor: "#757575",
-				changeNameColor: "#EEEEEE",
-			},
 			hoveredTitle: {
 				backgroundColor: "#EEEEEE",
 				color: "#424242",
@@ -248,6 +244,11 @@ const themeStyle: ThemeStyle = {
 			textColor: "#FAFAFA",
 			borderColor: "#FAFAFA",
 			backgroundColor: "transparent",
+		},
+		contextMenu: {
+			backgroundColor: "#424242",
+			borderColor: "#757575",
+			color: "#EEEEEE",
 		},
 		modal: {
 			backgroundColor: "#424242",
