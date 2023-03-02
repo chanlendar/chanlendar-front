@@ -1,7 +1,7 @@
 import { css, useTheme } from "@emotion/react";
 
 interface Props {
-	// TODO: 스타일링 다하고 나서 바꾸기
+	// TODO: 기능구현할 때 바꾸기
 	finished?: boolean;
 }
 

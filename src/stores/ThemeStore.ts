@@ -89,6 +89,11 @@ export type ThemeStyleForEmotion = {
 
 	daily: {
 		backgroundColor: string;
+		list: {
+			backgroundColor: string;
+			titleColor: string;
+			boxShadow: string;
+		};
 		item: {
 			borderColor: string;
 			color: string;
@@ -152,6 +157,11 @@ const themeStyle: ThemeStyle = {
 		},
 		daily: {
 			backgroundColor: "#EEEEEE",
+			list: {
+				backgroundColor: "#FFFFFF",
+				titleColor: "#000000",
+				boxShadow: "0px 1px 8px #E0E0E0",
+			},
 			item: {
 				borderColor: "#000000",
 				color: "#000000",
@@ -211,6 +221,11 @@ const themeStyle: ThemeStyle = {
 		},
 		daily: {
 			backgroundColor: "#424242",
+			list: {
+				backgroundColor: "#757575",
+				titleColor: "#FAFAFA",
+				boxShadow: "0px 1px 8px rgba(117, 117, 117, 0.5);",
+			},
 			item: {
 				borderColor: "#FAFAFA",
 				color: "#FAFAFA",
