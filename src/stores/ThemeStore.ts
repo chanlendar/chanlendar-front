@@ -99,6 +99,10 @@ export type ThemeStyleForEmotion = {
 			color: string;
 			finishedColor: string;
 		};
+		calendar: {
+			backgroundColor: string;
+			boxShadow: string;
+		};
 	};
 
 	button: {
@@ -167,6 +171,10 @@ const themeStyle: ThemeStyle = {
 				color: "#000000",
 				finishedColor: "#757575",
 			},
+			calendar: {
+				backgroundColor: "#FFFFFF",
+				boxShadow: "0px 1px 8px #E0E0E0;",
+			},
 		},
 		button: {
 			textColor: "#000000",
@@ -230,6 +238,10 @@ const themeStyle: ThemeStyle = {
 				borderColor: "#FAFAFA",
 				color: "#FAFAFA",
 				finishedColor: "#929292",
+			},
+			calendar: {
+				backgroundColor: "#757575",
+				boxShadow: "0px 1px 8px rgba(117, 117, 117, 0.5);",
 			},
 		},
 		button: {
