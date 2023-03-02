@@ -30,6 +30,8 @@ const DailyList: React.FC<Props> = () => {
 					line-height: 24px;
 
 					margin-bottom: 40px;
+
+					color: ${theme.daily.list.titleColor};
 				`}
 			>
 				Title
