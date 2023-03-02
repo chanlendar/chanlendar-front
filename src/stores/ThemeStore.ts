@@ -90,6 +90,12 @@ export type ThemeStyleForEmotion = {
 		backgroundColor: string;
 	};
 
+	button: {
+		textColor: string;
+		borderColor: string;
+		backgroundColor: string;
+	};
+
 	modal: {
 		backgroundColor: string;
 		titleColor: string;
@@ -140,6 +146,11 @@ const themeStyle: ThemeStyle = {
 		daily: {
 			backgroundColor: "#EEEEEE",
 		},
+		button: {
+			textColor: "#000000",
+			borderColor: "#BDBDBD",
+			backgroundColor: "transparent",
+		},
 		modal: {
 			backgroundColor: "#FAFAFA",
 			titleColor: "#000000",
@@ -187,6 +198,11 @@ const themeStyle: ThemeStyle = {
 		},
 		daily: {
 			backgroundColor: "#424242",
+		},
+		button: {
+			textColor: "#FAFAFA",
+			borderColor: "#FAFAFA",
+			backgroundColor: "transparent",
 		},
 		modal: {
 			backgroundColor: "#424242",
