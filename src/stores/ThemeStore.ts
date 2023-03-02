@@ -55,6 +55,7 @@ export type ThemeStyleForEmotion = {
 		title: {
 			color: string;
 		};
+		dailyBackgroundColor: string;
 	};
 
 	body: {
@@ -121,6 +122,7 @@ const themeStyle: ThemeStyle = {
 			title: {
 				color: "#000000",
 			},
+			dailyBackgroundColor: "#E0E0E0",
 		},
 		body: {
 			backgroundColor: "#FAFAFA",
@@ -179,6 +181,7 @@ const themeStyle: ThemeStyle = {
 			title: {
 				color: "#FAFAFA",
 			},
+			dailyBackgroundColor: "#212121",
 		},
 		body: {
 			backgroundColor: "#212121",

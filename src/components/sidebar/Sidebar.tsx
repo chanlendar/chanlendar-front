@@ -191,7 +191,7 @@ const Container = styled.ul`
 
 	width: 72px;
 	height: calc(100vh - 56px);
-	background-color: ${({ theme }) => theme.body.backgroundColor};
+	background-color: ${({ theme }) => theme.sidebar.backgroundColor};
 	overflow-y: auto;
 	padding: 0px 12px;
 
