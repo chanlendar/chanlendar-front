@@ -1,11 +1,17 @@
 import { css, useTheme } from "@emotion/react";
+import { MouseEvent } from "react";
 
 interface Props {
 	// TODO: 기능구현할 때 바꾸기
 	finished?: boolean;
+	onContextMenu: (e: MouseEvent<HTMLDivElement>) => void;
 }
 
-const DailyItem = ({ children, finished = false }: React.PropsWithChildren<Props>) => {
+const DailyItem = ({
+	children,
+	finished = false,
+	onContextMenu,
+}: React.PropsWithChildren<Props>) => {
 	const theme = useTheme();
 	const borderColor = finished
 		? theme.daily.item.finishedColor
@@ -26,6 +32,7 @@ const DailyItem = ({ children, finished = false }: React.PropsWithChildren<Props
 				font-size: 16px;
 				text-decoration: ${textDecoration};
 			`}
+			onContextMenu={onContextMenu}
 		>
 			{children}
 		</div>
