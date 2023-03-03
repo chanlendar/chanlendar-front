@@ -1,6 +1,5 @@
 import { ThemeProvider } from "@emotion/react";
 import { observer } from "mobx-react";
-import { CookiesProvider } from "react-cookie";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import GlobalStyles from "@/init/GlobalStyles";
@@ -17,14 +16,14 @@ const Root = () => {
 	const { themeStore } = useStores();
 
 	return (
-		<CookiesProvider>
+		<>
 			<UpdateUserCookieWhenExit />
 			<TryLoginAutomatically />
 			<ThemeProvider theme={themeStore.getThemeStyles}>
 				<GlobalStyles />
 				<RouterProvider router={router} />
 			</ThemeProvider>
-		</CookiesProvider>
+		</>
 	);
 };
 

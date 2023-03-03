@@ -1,6 +1,7 @@
-import { observer } from "mobx-react";
+import { Theme, useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { observer } from "mobx-react";
 
 import useStores from "@/hooks/useStore";
 import LightTheme from "@/icons/LightTheme";
@@ -9,14 +10,17 @@ import DarkTheme from "@/icons/DarkTheme";
 interface Props {}
 
 const Header: React.FC<Props> = () => {
+	const theme = useTheme();
 	const { themeStore } = useStores();
 
+	const location = useLocation();
+	const titleBackgroundColor = getTitleBackgroundColor(location.pathname, theme);
 	const onIconClick = () => {
 		themeStore.flipTheme();
 	};
 
 	return (
-		<Head>
+		<Head backgroundColor={titleBackgroundColor}>
 			<Link to={"/"}>
 				<Title>Chanlendar</Title>
 			</Link>
@@ -29,9 +33,14 @@ const Header: React.FC<Props> = () => {
 	);
 };
 
-const Head = styled.header`
+const getTitleBackgroundColor = (path: string, theme: Theme) => {
+	if (path === "/daily") return theme.header.dailyBackgroundColor;
+	return theme.header.backgroundColor;
+};
+
+const Head = styled.header<{ backgroundColor: string }>`
 	height: 56px;
-	background-color: ${({ theme }) => theme.header.backgroundColor};
+	background-color: ${({ backgroundColor }) => backgroundColor};
 	border-bottom: 1px solid ${({ theme }) => theme.header.borderBottom};
 
 	padding: 0 20px;
@@ -43,6 +52,7 @@ const Head = styled.header`
 
 const Title = styled.div`
 	font-size: 20px;
+	font-weight: bold;
 	color: ${({ theme }) => theme.header.title.color};
 	cursor: pointer;
 `;

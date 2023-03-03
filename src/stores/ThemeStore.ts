@@ -55,6 +55,7 @@ export type ThemeStyleForEmotion = {
 		title: {
 			color: string;
 		};
+		dailyBackgroundColor: string;
 	};
 
 	body: {
@@ -75,15 +76,40 @@ export type ThemeStyleForEmotion = {
 			hoverColor: string;
 			hoverBackgroundColor: string;
 		};
-		contextMenu: {
-			backgroundColor: string;
-			borderColor: string;
-			changeNameColor: string;
-		};
 		hoveredTitle: {
 			backgroundColor: string;
 			color: string;
 		};
+	};
+
+	daily: {
+		backgroundColor: string;
+		list: {
+			backgroundColor: string;
+			titleColor: string;
+			boxShadow: string;
+		};
+		item: {
+			borderColor: string;
+			color: string;
+			finishedColor: string;
+		};
+		calendar: {
+			backgroundColor: string;
+			boxShadow: string;
+		};
+	};
+
+	button: {
+		textColor: string;
+		borderColor: string;
+		backgroundColor: string;
+	};
+
+	contextMenu: {
+		backgroundColor: string;
+		borderColor: string;
+		color: string;
 	};
 
 	modal: {
@@ -106,6 +132,7 @@ const themeStyle: ThemeStyle = {
 			title: {
 				color: "#000000",
 			},
+			dailyBackgroundColor: "#E0E0E0",
 		},
 		body: {
 			backgroundColor: "#FAFAFA",
@@ -123,15 +150,37 @@ const themeStyle: ThemeStyle = {
 				hoverColor: "#FAFAFA",
 				hoverBackgroundColor: "#000000",
 			},
-			contextMenu: {
-				backgroundColor: "#F5F5F5",
-				borderColor: "#E0E0E0",
-				changeNameColor: "#000000",
-			},
 			hoveredTitle: {
 				backgroundColor: "#424242",
 				color: "#FFFFFF",
 			},
+		},
+		daily: {
+			backgroundColor: "#EEEEEE",
+			list: {
+				backgroundColor: "#FFFFFF",
+				titleColor: "#000000",
+				boxShadow: "0px 1px 8px #E0E0E0",
+			},
+			item: {
+				borderColor: "#000000",
+				color: "#000000",
+				finishedColor: "#757575",
+			},
+			calendar: {
+				backgroundColor: "#FFFFFF",
+				boxShadow: "0px 1px 8px #E0E0E0;",
+			},
+		},
+		button: {
+			textColor: "#000000",
+			borderColor: "#BDBDBD",
+			backgroundColor: "transparent",
+		},
+		contextMenu: {
+			backgroundColor: "#F5F5F5",
+			borderColor: "#E0E0E0",
+			color: "#000000",
 		},
 		modal: {
 			backgroundColor: "#FAFAFA",
@@ -151,6 +200,7 @@ const themeStyle: ThemeStyle = {
 			title: {
 				color: "#FAFAFA",
 			},
+			dailyBackgroundColor: "#212121",
 		},
 		body: {
 			backgroundColor: "#212121",
@@ -168,15 +218,37 @@ const themeStyle: ThemeStyle = {
 				hoverColor: "#212121",
 				hoverBackgroundColor: "#FAFAFA",
 			},
-			contextMenu: {
-				backgroundColor: "#424242",
-				borderColor: "#757575",
-				changeNameColor: "#EEEEEE",
-			},
 			hoveredTitle: {
 				backgroundColor: "#EEEEEE",
 				color: "#424242",
 			},
+		},
+		daily: {
+			backgroundColor: "#424242",
+			list: {
+				backgroundColor: "#757575",
+				titleColor: "#FAFAFA",
+				boxShadow: "0px 1px 8px rgba(117, 117, 117, 0.5);",
+			},
+			item: {
+				borderColor: "#FAFAFA",
+				color: "#FAFAFA",
+				finishedColor: "#929292",
+			},
+			calendar: {
+				backgroundColor: "#757575",
+				boxShadow: "0px 1px 8px rgba(117, 117, 117, 0.5);",
+			},
+		},
+		button: {
+			textColor: "#FAFAFA",
+			borderColor: "#FAFAFA",
+			backgroundColor: "transparent",
+		},
+		contextMenu: {
+			backgroundColor: "#424242",
+			borderColor: "#757575",
+			color: "#EEEEEE",
 		},
 		modal: {
 			backgroundColor: "#424242",

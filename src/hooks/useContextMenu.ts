@@ -9,16 +9,17 @@ const initialContextMenu = {
 export default function () {
 	const [contextMenu, setContextMenu] = useState(initialContextMenu);
 
-	const onContextMenu = (e: MouseEvent<HTMLDivElement>) => {
-		e.preventDefault();
-
-		const { pageX, pageY } = e;
-		setContextMenu({
-			show: true,
-			x: pageX,
-			y: pageY,
-		});
-	};
+	const onContextMenu =
+		(id: string, callback: (id: string) => void) => (e: MouseEvent<HTMLDivElement>) => {
+			e.preventDefault();
+			const { pageX, pageY } = e;
+			setContextMenu({
+				show: true,
+				x: pageX,
+				y: pageY,
+			});
+			callback(id);
+		};
 
 	const closeContextMenu = () => {
 		setContextMenu({

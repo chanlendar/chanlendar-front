@@ -1,12 +1,13 @@
-import { useCookies } from "react-cookie";
 import { Navigate } from "react-router-dom";
+
+import useCookie from "@/hooks/useCookie";
 
 interface Props {}
 
 const RequireNonUser = ({ children }: React.PropsWithChildren<Props>) => {
-	const [cookies] = useCookies(["user"]);
+	const [getCookie] = useCookie();
 
-	if (cookies["user"]) {
+	if (getCookie("user")) {
 		return <Navigate to="/" replace />;
 	}
 
