@@ -1,6 +1,6 @@
 import { QuerySnapshot } from "firebase/firestore";
 import { DocumentData } from "firebase/firestore/lite";
-import { action, makeObservable, observable } from "mobx";
+import { action, makeObservable, observable, computed } from "mobx";
 
 type Subject = { id: string; name: string }[];
 
@@ -9,6 +9,7 @@ export default class SubjectStore {
 		makeObservable(this, {
 			subjects: observable,
 			getSubjectsFromQuerySnapshot: action,
+			empty: computed,
 			addSubject: action,
 			changeSubjectName: action,
 			deleteSubject: action,
@@ -22,6 +23,10 @@ export default class SubjectStore {
 			id: doc.data().id as string,
 			name: doc.data().name as string,
 		}));
+	}
+
+	get empty() {
+		return this.subjects.length === 0;
 	}
 
 	addSubject(name: string, id: string) {

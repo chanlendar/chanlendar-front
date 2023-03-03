@@ -53,6 +53,7 @@
 		"@emotion/babel-plugin": "^11.10.5",
 		"@emotion/react": "^11.10.5",
 		"@emotion/styled": "^11.10.5",
+		"dayjs": "^1.11.7",
 		"firebase": "^9.17.1",
 		"mobx": "^6.8.0",
 		"mobx-react": "^7.6.0",

@@ -1,5 +1,6 @@
 import { Timestamp } from "firebase/firestore";
 import Cookies, { CookieSetOptions } from "universal-cookie";
+import dayjs from "dayjs";
 
 function hasNull(...datas: any[]) {
 	datas.forEach((v) => {
@@ -36,6 +37,10 @@ function deleteCoookie(name: string) {
 	cookies.remove(name);
 }
 
+function getToday() {
+	return dayjs(Date.now()).format("YYYYMMDD");
+}
+
 export {
 	hasNull,
 	insertCreateAtAndUpdatedAt,
@@ -43,4 +48,5 @@ export {
 	getCookie,
 	setCookie,
 	deleteCoookie,
+	getToday,
 };

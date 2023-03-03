@@ -1,18 +1,18 @@
 import styled from "@emotion/styled";
-import DailyBackground from "@/pages/daily/DailyBackground";
 import { ReactNode } from "react";
 
+import DailyBackground from "@/pages/daily/DailyBackground";
+import FlexWithSidebar from "@/components/sidebar/FlexWithSidebar";
+
 interface Props {
-	Sidebar: ReactNode;
 	Button: ReactNode;
 	DailyList: ReactNode;
 	Calendar: ReactNode;
 }
 
-const Layout: React.FC<Props> = ({ Sidebar, Button, DailyList, Calendar }) => {
+const Layout: React.FC<Props> = ({ Button, DailyList, Calendar }) => {
 	return (
-		<Flex>
-			{Sidebar}
+		<FlexWithSidebar>
 			<DailyBackground>
 				<PageLayout>
 					<ContentLayout>
@@ -24,13 +24,9 @@ const Layout: React.FC<Props> = ({ Sidebar, Button, DailyList, Calendar }) => {
 					</ContentLayout>
 				</PageLayout>
 			</DailyBackground>
-		</Flex>
+		</FlexWithSidebar>
 	);
 };
-
-const Flex = styled.div`
-	display: flex;
-`;
 
 const PageLayout = styled.div`
 	display: flex;
