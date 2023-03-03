@@ -1,6 +1,5 @@
 import { css, useTheme } from "@emotion/react";
 import { useState } from "react";
-import { useCookies } from "react-cookie";
 import { observer } from "mobx-react-lite";
 import { v4 as uuidv4 } from "uuid";
 
@@ -8,6 +7,7 @@ import useContextMenu from "@/hooks/useContextMenu";
 import useInput from "@/hooks/useInput";
 import useModal from "@/hooks/useModal";
 import useStores from "@/hooks/useStore";
+import useCookie from "@/hooks/useCookie";
 
 import { changeSubjectName, createSubject, deleteSubject } from "@/apis/subjects";
 
@@ -22,20 +22,30 @@ interface Props {}
 
 const Subjects = (props: React.PropsWithChildren<Props>) => {
 	const theme = useTheme();
-	const [cookies] = useCookies(["user"]);
-	const { subjectStore, dailyStore } = useStores();
+	const [getCookie] = useCookie();
+	const { subjectStore } = useStores();
+
+	const [hoverId, setHoverId] = useState("");
+
+	const onHoverEnter = (id: string) => () => {
+		setHoverId(id);
+	};
+
+	const onHoverLeave = () => {
+		setHoverId("");
+	};
 
 	const onSubjectClick = (subjectId: string) => () => {
-		dailyStore.changeSubject(subjectId);
+		subjectStore.changeCurrentSubject(subjectId);
 	};
 
 	const onYesButtonClick = () => {
 		(async () => {
 			const id = uuidv4();
-			await createSubject(cookies["user"]?.uid, input, id);
+
+			await createSubject(getCookie("user").uid, input, id);
 			subjectStore.addSubject(input, id);
-			dailyStore.changeSubject(id);
-			dailyStore.changeCurrentDayToToday();
+			subjectStore.changeCurrentSubject(id);
 			setInput("");
 			setModalOpen(false);
 		})();
@@ -46,17 +56,11 @@ const Subjects = (props: React.PropsWithChildren<Props>) => {
 		setModalOpen(false);
 	};
 
-	const [id, setId] = useState("");
-	const [idToModify, setIdToModify] = useState("");
-	const onMouseEnter = (id: string) => () => {
-		setId(id);
-		setIdToModify(id);
-	};
-	const onMouseLeave = () => {
-		setId("");
-	};
-
 	const [contextMenu, _, onContextMenu, closeContextMenu] = useContextMenu();
+	const [id, setId] = useState("");
+	const changeIdWhenContextMenuOpened = (id: string) => {
+		setId(id);
+	};
 
 	const [input, setInput, onInputChange] = useInput("");
 
@@ -82,20 +86,21 @@ const Subjects = (props: React.PropsWithChildren<Props>) => {
 		setInput("");
 	};
 
-	const onChangeSubjectName = () => {
-		changeSubjectName(cookies["user"]?.uid, input, idToModify);
-		subjectStore.changeSubjectName(input, idToModify);
+	const onChangeSubjectName = async () => {
+		await changeSubjectName(getCookie("user").uid, input, id);
+		subjectStore.changeSubjectName(input, id);
 		setEditSubjectOpen(false);
+
+		setId("");
 		setInput("");
-		setIdToModify("");
 	};
 
-	const onDeleteSubjectClick = () => {
-		deleteSubject(cookies["user"]?.uid, idToModify);
-		subjectStore.deleteSubject(idToModify);
+	const onDeleteSubjectClick = async () => {
+		await deleteSubject(getCookie("user").uid, id);
+		subjectStore.deleteSubject(id);
 		setEditSubjectOpen(false);
 		setInput("");
-		setIdToModify("");
+		setId("");
 		closeContextMenu();
 	};
 
@@ -105,12 +110,12 @@ const Subjects = (props: React.PropsWithChildren<Props>) => {
 				<Subject
 					key={s.id}
 					onClick={onSubjectClick(s.id)}
-					onContextMenu={onContextMenu}
-					onMouseEnter={onMouseEnter(s.id)}
-					onMouseLeave={onMouseLeave}
+					onContextMenu={onContextMenu(s.id, changeIdWhenContextMenuOpened)}
+					onMouseEnter={onHoverEnter(s.id)}
+					onMouseLeave={onHoverLeave}
 				>
 					{s.name[0]}
-					<HoveredTitle show={s.id === id}>{s.name}</HoveredTitle>
+					<HoveredTitle show={s.id === hoverId}>{s.name}</HoveredTitle>
 				</Subject>
 			))}
 			<CreateButton onClick={() => setModalOpen(true)} />

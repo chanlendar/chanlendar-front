@@ -1,5 +1,7 @@
+import { finishTask } from "@/apis/dailies";
 import { action, computed, makeObservable, observable } from "mobx";
 import { getToday } from "@/utils";
+import { DocumentData, QuerySnapshot } from "firebase/firestore";
 
 type DateString = string;
 type DailyItem = {
@@ -7,60 +9,65 @@ type DailyItem = {
 	id: string;
 	finished: boolean;
 };
-type DailyItems = DailyItem[];
+type DailyList = DailyItem[];
 
 export default class DailyStore {
 	constructor() {
 		makeObservable(this, {
-			subjectId: observable,
 			currentDay: observable,
-			taskListTable: observable,
-			changeSubject: action,
-			changeDay: action,
-			currentTasks: computed,
-			createTask: action,
+			subjectsToDates: observable,
+			datesToDailyLists: observable,
+			dailyList: observable,
+			initializeBySubject: action,
+			setDailyListFrom: action,
+			addTask: action,
 			modifyTask: action,
 			deleteTask: action,
+			finishTask: action,
 		});
 	}
 
-	subjectId = "";
-	currentDay: DateString = "";
-	taskListTable = new Map<DateString, DailyItems>();
+	currentDay: DateString = getToday();
+	subjectsToDates: Map<string, Map<DateString, DailyList>> = new Map();
+	datesToDailyLists: Map<DateString, DailyList> = new Map();
+	dailyList: DailyList = [];
 
-	changeSubject(id: string) {
-		this.subjectId = id;
+	initializeBySubject(subjectId: string) {
+		const map = new Map();
+		map.set(this.currentDay, []);
+
+		this.datesToDailyLists = map;
+		this.subjectsToDates.set(subjectId, this.datesToDailyLists);
 	}
 
-	changeDay(day: DateString) {
-		this.currentDay = day;
+	setDailyListFrom(qs: QuerySnapshot<DocumentData>) {
+		const dailyList = qs.docs.map((d) => {
+			return {
+				id: d.data().id,
+				task: d.data().task,
+				finished: d.data().finished,
+			};
+		});
+
+		this.datesToDailyLists.set(this.currentDay, dailyList);
+		this.dailyList = dailyList;
 	}
 
-	changeCurrentDayToToday() {
-		this.currentDay = getToday();
-	}
-
-	get currentTasks() {
-		return this.taskListTable.get(this.currentDay) || [];
-	}
-
-	createTask(task: DailyItem) {
-		if (this.taskListTable.has(this.currentDay)) {
-			this.currentTasks.push(task);
-		} else {
-			this.taskListTable.set(this.currentDay, [task]);
-		}
+	addTask(id: string, task: string) {
+		this.dailyList.push({ id, task, finished: false });
 	}
 
 	modifyTask(taskId: string, newTask: string) {
-		const idx = this.currentTasks.findIndex((t) => t.id === taskId);
-		this.currentTasks[idx].task = newTask;
+		const idx = this.dailyList.findIndex((t) => t.id === taskId);
+		this.dailyList[idx].task = newTask;
 	}
 
 	deleteTask(taskId: string) {
-		this.taskListTable.set(
-			this.currentDay,
-			this.currentTasks.filter((t) => t.id !== taskId),
-		);
+		this.dailyList = this.dailyList.filter((t) => t.id !== taskId);
+	}
+
+	finishTask(taskId: string, finished: boolean) {
+		const idx = this.dailyList.findIndex((t) => t.id === taskId);
+		this.dailyList[idx].finished = finished;
 	}
 }
