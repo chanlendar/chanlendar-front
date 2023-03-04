@@ -11,6 +11,7 @@ const App = () => {
 			themeStore={stores.themeStore}
 			subjectStore={stores.subjectStore}
 			dailyStore={stores.dailyStore}
+			calendarStore={stores.calendarStore}
 		>
 			<Root />
 		</Provider>
