@@ -19,6 +19,22 @@ export default class CalendarStore {
 		this.currentDay = this.currentDay.set("year", year);
 	}
 
+	addMonth() {
+		this.currentDay = this.currentDay.add(1, "month");
+	}
+
+	addYear() {
+		this.currentDay = this.currentDay.add(1, "year");
+	}
+
+	subtractMonth() {
+		this.currentDay = this.currentDay.subtract(1, "month");
+	}
+
+	subtractYear() {
+		this.currentDay = this.currentDay.subtract(1, "year");
+	}
+
 	get displayCurrentDate() {
 		return this.currentDay.format(DATE_FORMAT);
 	}

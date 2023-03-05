@@ -21,15 +21,17 @@ const CalendarHeader = ({ onClick }: React.PropsWithChildren<Props>) => {
 				height: 40px;
 				display: flex;
 			`}
-			onClick={onClick}
 		>
 			<CalendarHeaderIcon
 				Icon={<ChevronDoubleLeft css={iconStyles(theme.daily.calendar.icon.fill)} />}
+				onClick={() => calendarStore.subtractYear()}
 			/>
 			<CalendarHeaderIcon
 				Icon={<ChevronLeft css={iconStyles(theme.daily.calendar.icon.fill)} />}
+				onClick={() => calendarStore.subtractMonth()}
 			/>
 			<div
+				onClick={onClick}
 				css={css`
 					width: calc(100% - 160px);
 					height: 40px;
@@ -47,10 +49,12 @@ const CalendarHeader = ({ onClick }: React.PropsWithChildren<Props>) => {
 				</span>
 			</div>
 			<CalendarHeaderIcon
-				Icon={<ChevronDoubleRight css={iconStyles(theme.daily.calendar.icon.fill)} />}
+				Icon={<ChevronRight css={iconStyles(theme.daily.calendar.icon.fill)} />}
+				onClick={() => calendarStore.addMonth()}
 			/>
 			<CalendarHeaderIcon
-				Icon={<ChevronRight css={iconStyles(theme.daily.calendar.icon.fill)} />}
+				Icon={<ChevronDoubleRight css={iconStyles(theme.daily.calendar.icon.fill)} />}
+				onClick={() => calendarStore.addYear()}
 			/>
 		</div>
 	);

@@ -4,12 +4,15 @@ import styled from "@emotion/styled";
 import useStores from "@/hooks/useStore";
 import { observer } from "mobx-react";
 
-interface Props {}
+interface Props {
+	onClose: VoidFunction;
+}
 
-const ChooseYear: React.FC<Props> = () => {
+const ChooseYear: React.FC<Props> = ({ onClose }) => {
 	const { calendarStore } = useStores();
 	const onYearClick = (year: number) => () => {
 		calendarStore.changeYear(year);
+		onClose();
 	};
 
 	return (
