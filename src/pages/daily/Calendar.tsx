@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
+import { observer } from "mobx-react";
 import styled from "@emotion/styled";
 
 import CalendarHeader from "@/pages/daily/CalendarHeader";
 import ChooseMonth from "@/pages/daily/ChooseMonth";
 import ChooseYear from "@/pages/daily/ChooseYear";
+import CalendarDays from "@/pages/daily/CalendarDays";
+import useStores from "@/hooks/useStore";
 
 interface Props {}
 
-// 연도 선택, 월 선택
-// 헤더 (월 넘기기, 연 넘기기)
-// 기본 동작: 특정 date가 주어지면 그 date의 월과 모든 요일을 보여주기
 const Calendar: React.FC<Props> = () => {
 	const [processToChooseMonthYear, setProcess] = useState(false);
 	const [openMonth, setOpenMonth] = useState(false);
 	const [openYear, setOpenYear] = useState(false);
+	const { calendarStore } = useStores();
 
 	useEffect(() => {
 		if (processToChooseMonthYear) setOpenMonth(true);
@@ -39,6 +40,9 @@ const Calendar: React.FC<Props> = () => {
 					}}
 				/>
 			)}
+			{!processToChooseMonthYear && (
+				<CalendarDays currentDay={calendarStore.currentDay} />
+			)}
 		</StyledLayout>
 	);
 };
@@ -55,4 +59,4 @@ const StyledLayout = styled.div`
 	box-shadow: ${({ theme }) => theme.daily.calendar.boxShadow};
 `;
 
-export default Calendar;
+export default observer(Calendar);
