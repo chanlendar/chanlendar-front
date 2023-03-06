@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 import CalendarHeader from "@/pages/daily/CalendarHeader";
 import ChooseMonth from "@/pages/daily/ChooseMonth";
 import ChooseYear from "@/pages/daily/ChooseYear";
-import CalendarDays from "@/pages/daily/CalendarDays";
+import CalendarBody from "@/pages/daily/CalendarBody";
 import useStores from "@/hooks/useStore";
 
 interface Props {}
@@ -41,7 +41,7 @@ const Calendar: React.FC<Props> = () => {
 				/>
 			)}
 			{!processToChooseMonthYear && (
-				<CalendarDays currentDay={calendarStore.currentDay} />
+				<CalendarBody currentDay={calendarStore.currentDay} />
 			)}
 		</StyledLayout>
 	);
