@@ -1,5 +1,5 @@
 import { css, useTheme } from "@emotion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 
 import useContextMenu from "@/hooks/useContextMenu";
@@ -40,9 +40,9 @@ const Subjects = (props: React.PropsWithChildren<Props>) => {
 
 	const onYesButtonClick = () => {
 		(async () => {
-			await createSubject(getCookie("user").uid, input);
-			subjectStore.addSubject(input, id);
-			subjectStore.changeCurrentSubject(id);
+			const data = await createSubject(getCookie("user").uid, input);
+			subjectStore.addSubject(data.subject, data.id);
+			subjectStore.changeCurrentSubject(data.id);
 			setInput("");
 			setModalOpen(false);
 		})();
@@ -84,7 +84,7 @@ const Subjects = (props: React.PropsWithChildren<Props>) => {
 	};
 
 	const onChangeSubjectName = async () => {
-		await changeSubjectName(getCookie("user").uid, input);
+		await changeSubjectName(input, id);
 		// TODO => updatedAt도 업데이트 해주기
 		subjectStore.changeSubjectName(input, id);
 		setEditSubjectOpen(false);
@@ -94,7 +94,7 @@ const Subjects = (props: React.PropsWithChildren<Props>) => {
 	};
 
 	const onDeleteSubjectClick = async () => {
-		await deleteSubject(getCookie("user").uid);
+		await deleteSubject(id);
 		subjectStore.deleteSubject(id);
 		setEditSubjectOpen(false);
 		setInput("");
@@ -112,8 +112,8 @@ const Subjects = (props: React.PropsWithChildren<Props>) => {
 					onMouseEnter={onHoverEnter(s.id)}
 					onMouseLeave={onHoverLeave}
 				>
-					{s.name[0]}
-					<HoveredTitle show={s.id === hoverId}>{s.name}</HoveredTitle>
+					{s.subject[0]}
+					<HoveredTitle show={s.id === hoverId}>{s.subject}</HoveredTitle>
 				</Subject>
 			))}
 			<CreateButton onClick={() => setModalOpen(true)} />
