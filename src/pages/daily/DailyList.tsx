@@ -27,13 +27,12 @@ const DailyList: React.FC<Props> = ({ creationMode, setCreationMode }) => {
 		setTaskModifyMode(false);
 	};
 
-	const { dailyStore, subjectStore } = useStores();
+	const { dailyStore, subjectStore, calendarStore } = useStores();
 	useEffect(() => {
 		const disposer = autorun(async () => {
 			const querySnapshot = await getDailyTasks(
-				getCookie("user").uid,
 				subjectStore.subject.id,
-				dailyStore.currentDay,
+				calendarStore.selectedDay.unix(),
 			);
 			dailyStore.setDailyListFrom(querySnapshot);
 		});
@@ -51,32 +50,21 @@ const DailyList: React.FC<Props> = ({ creationMode, setCreationMode }) => {
 	};
 
 	const onTaskDeleteClick = async () => {
-		await deleteDailyTask(
-			getCookie("user").uid,
-			subjectStore.subject.id,
-			dailyStore.currentDay,
-			taskId,
-		);
+		await deleteDailyTask(subjectStore.subject.id, taskId);
 		dailyStore.deleteTask(taskId);
 		onContextMenuClose();
 	};
 
 	const onTaskFinishClick = (taskId: string, finished: boolean) => async () => {
-		finishTask(
-			getCookie("user").uid,
-			subjectStore.subject.id,
-			dailyStore.currentDay,
-			taskId,
-			!finished,
-		);
-		dailyStore.finishTask(taskId, !finished);
+		finishTask(subjectStore.subject.id, taskId, finished);
+		dailyStore.finishTask(taskId, finished);
 	};
 
 	const [taskModifyMode, setTaskModifyMode] = useState(false);
 
 	return (
 		<Layout>
-			<Title>{subjectStore.subject.name}</Title>
+			<Title>{subjectStore.subject.subject}</Title>
 			<List>
 				<>
 					{creationMode && <CreationInput command="ADD" setMode={setCreationMode} />}
@@ -88,7 +76,7 @@ const DailyList: React.FC<Props> = ({ creationMode, setCreationMode }) => {
 							onContextMenu={onContextMenu(id, onChangeIdWhenContextMenuOpened)}
 							taskModifyMode={taskModifyMode && taskId === id}
 							setTaskModifyMode={setTaskModifyMode}
-							onClick={onTaskFinishClick(id, finished)}
+							onClick={onTaskFinishClick(id, !finished)}
 						>
 							{task}
 						</DailyItem>

@@ -2,6 +2,7 @@ import { Dispatch, KeyboardEvent, SetStateAction, useEffect, useRef } from "reac
 import { useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
 import { v4 as uuidv4 } from "uuid";
+import dayjs from "dayjs";
 
 import useInput from "@/hooks/useInput";
 import useStores from "@/hooks/useStore";
@@ -24,7 +25,7 @@ const CreationInput: React.FC<Props> = ({ setMode, command, taskId }) => {
 	const [input, setInput, onChange] = useInput();
 	const ref = useRef<HTMLInputElement>(null);
 	const [getCookie] = useCookie();
-	const { subjectStore, dailyStore } = useStores();
+	const { subjectStore, dailyStore, calendarStore } = useStores();
 
 	useEffect(() => {
 		if (ref.current) ref.current.focus();
@@ -32,31 +33,21 @@ const CreationInput: React.FC<Props> = ({ setMode, command, taskId }) => {
 
 	const onKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === "Enter" && input !== "") {
-			const user = getCookie("user");
-			const newId = uuidv4();
-
 			if (command === "ADD") {
-				await addDailyTask(
-					user.uid,
+				const result = await addDailyTask(
 					subjectStore.subject.id,
-					dailyStore.currentDay,
-					newId,
+					calendarStore.selectedDay.unix(),
 					input,
 				);
-				dailyStore.addTask(newId, input);
+				dailyStore.addTask(result.id, result.task);
 			} else if (command === "MODIFY") {
-				await modifyDailyTask(
-					user.uid,
-					subjectStore.subject.id,
-					dailyStore.currentDay,
-					taskId!,
-					input,
-				);
+				await modifyDailyTask(subjectStore.subject.id, taskId!, input);
 				dailyStore.modifyTask(taskId!, input);
 				setMode(false);
 			}
 			setInput("");
 		} else if (e.key === "Escape") {
+			e.preventDefault();
 			setInput("");
 			setMode(false);
 		}
