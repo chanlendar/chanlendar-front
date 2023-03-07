@@ -99,6 +99,9 @@ export type ThemeStyleForEmotion = {
 			boxShadow: string;
 			item: {
 				text: string;
+				selectedText: string;
+				selectedBackground: string;
+				borderColor: string;
 			};
 			icon: {
 				fill: string;
@@ -178,6 +181,9 @@ const themeStyle: ThemeStyle = {
 				boxShadow: "0px 1px 8px #E0E0E0;",
 				item: {
 					text: "#000000",
+					selectedText: "#FAFAFA",
+					selectedBackground: "#212121",
+					borderColor: "#212121",
 				},
 				icon: {
 					fill: "#000000",
@@ -252,6 +258,9 @@ const themeStyle: ThemeStyle = {
 				boxShadow: "0px 1px 8px rgba(117, 117, 117, 0.5);",
 				item: {
 					text: "#FAFAFA",
+					selectedText: "#000000",
+					selectedBackground: "#FAFAFA",
+					borderColor: "#FAFAFA",
 				},
 				icon: {
 					fill: "#FAFAFA",

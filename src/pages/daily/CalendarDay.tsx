@@ -1,16 +1,35 @@
 import { ReactNode } from "react";
 import { css, useTheme } from "@emotion/react";
+import useStores from "@/hooks/useStore";
 
 interface Props {
 	children: ReactNode;
 	saturDay: boolean;
 	sunDay: boolean;
+	isSelected: boolean;
+	hasTask: boolean;
+	date: number;
 }
 
-const CalendarDay: React.FC<Props> = ({ children, saturDay, sunDay }) => {
+const CalendarDay: React.FC<Props> = ({
+	children,
+	saturDay,
+	sunDay,
+	isSelected,
+	hasTask,
+	date,
+}) => {
+	const { calendarStore } = useStores();
 	const theme = useTheme();
 	const color =
-		(saturDay && "#2979ff") || (sunDay && "#f44336") || theme.daily.calendar.item.text;
+		(isSelected && theme.daily.calendar.item.selectedText) ||
+		(hasTask && theme.daily.calendar.item.borderColor) ||
+		(saturDay && "#2979ff") ||
+		(sunDay && "#f44336") ||
+		theme.daily.calendar.item.text;
+	const backgroundColor =
+		(isSelected && theme.daily.calendar.item.selectedBackground) || "transparent";
+	const borderColor = (hasTask && theme.daily.calendar.item.borderColor) || "none";
 
 	return (
 		<div
@@ -24,12 +43,17 @@ const CalendarDay: React.FC<Props> = ({ children, saturDay, sunDay }) => {
 		>
 			<div
 				css={css`
-					width: 20px;
-					height: 20px;
+					width: 26px;
+					height: 26px;
 					display: flex;
 					justify-content: center;
 					align-items: center;
+					background-color: ${backgroundColor};
+					border-radius: 2px;
+					border: 1px solid ${borderColor};
+					cursor: pointer;
 				`}
+				onClick={() => calendarStore.changeSelectedDay(date)}
 			>
 				{children}
 			</div>

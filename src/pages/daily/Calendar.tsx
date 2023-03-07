@@ -57,6 +57,8 @@ const StyledLayout = styled.div`
 
 	background-color: ${({ theme }) => theme.daily.calendar.backgroundColor};
 	box-shadow: ${({ theme }) => theme.daily.calendar.boxShadow};
+
+	user-select: none;
 `;
 
 export default observer(Calendar);

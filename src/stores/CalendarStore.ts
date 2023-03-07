@@ -2,13 +2,14 @@ import dayjs, { Dayjs } from "dayjs";
 import { makeAutoObservable } from "mobx";
 
 const DATE_FORMAT = "YYYYMMDD";
-
+const initialDay = dayjs(Date.now());
 export default class CalendarStore {
 	constructor() {
 		makeAutoObservable(this, {});
 	}
 
-	currentDay: Dayjs = dayjs(Date.now());
+	currentDay: Dayjs = initialDay;
+	selectedDay: Dayjs = initialDay;
 
 	// 0 -> January, 1 -> Febuary, ...
 	changeMonth(month: number) {
@@ -57,5 +58,9 @@ export default class CalendarStore {
 		}
 
 		return years;
+	}
+
+	changeSelectedDay(date: number) {
+		if (date !== 0) this.selectedDay = this.currentDay.clone().set("date", date);
 	}
 }

@@ -1,23 +1,34 @@
 import { Dayjs } from "dayjs";
 import CalendarBodyGrid from "@/pages/daily/CalendarBodyGrid";
+import useStores from "@/hooks/useStore";
+import { observer } from "mobx-react";
 
 interface Props {
 	currentDay: Dayjs;
 }
 
 const CalendarBody: React.FC<Props> = ({ currentDay }) => {
-	let start = currentDay.startOf("month");
-	const endDate = currentDay.endOf("month").get("date");
+	const { calendarStore } = useStores();
 	const weeks = [];
-	let days: { date: number | string; saturDay: boolean; sunDay: boolean }[] = [];
+	let days: {
+		date: number | string;
+		saturDay: boolean;
+		sunDay: boolean;
+		isSelected: boolean;
+		hasTask: boolean;
+	}[] = [];
 
+	let start = currentDay.startOf("month");
 	const startDate = start.get("date");
+	const endDate = currentDay.endOf("month").get("date");
 
 	for (let i = startDate; i <= endDate; i++) {
 		days.push({
 			date: i,
 			saturDay: start.get("day") === 6,
 			sunDay: start.get("day") === 0,
+			isSelected: start.isSame(calendarStore.selectedDay, "day"),
+			hasTask: false,
 		});
 		if (start.get("day") === 6) {
 			weeks.push(days);
@@ -39,6 +50,8 @@ const CalendarBody: React.FC<Props> = ({ currentDay }) => {
 			date: "",
 			saturDay: false,
 			sunDay: false,
+			isSelected: false,
+			hasTask: false,
 		});
 	}
 
@@ -48,10 +61,12 @@ const CalendarBody: React.FC<Props> = ({ currentDay }) => {
 			date: "",
 			saturDay: false,
 			sunDay: false,
+			isSelected: false,
+			hasTask: false,
 		});
 	}
 
 	return <CalendarBodyGrid weeks={weeks} rows={weeks.length} />;
 };
 
-export default CalendarBody;
+export default observer(CalendarBody);

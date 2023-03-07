@@ -1,11 +1,17 @@
 import styled from "@emotion/styled";
 
 import CalendarWeek from "@/pages/daily/CalendarWeek";
-import CalendarWeekTitles from "./CalendarWeekTitles";
+import CalendarWeekTitles from "@/pages/daily/CalendarWeekTitles";
 
 interface Props {
 	rows: number;
-	weeks: { date: string | number; saturDay: boolean; sunDay: boolean }[][];
+	weeks: {
+		date: string | number;
+		saturDay: boolean;
+		sunDay: boolean;
+		isSelected: boolean;
+		hasTask: boolean;
+	}[][];
 }
 
 const CalendarBodyGrid: React.FC<Props> = ({ rows, weeks }) => {
