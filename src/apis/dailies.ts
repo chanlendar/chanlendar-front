@@ -1,134 +1,90 @@
+import dayjs from "dayjs";
 import {
 	getFirestore,
 	collection,
 	getDocs,
-	addDoc,
-	setDoc,
 	updateDoc,
 	deleteDoc,
 	query,
 	where,
-	limit,
 	doc,
+	setDoc,
 } from "firebase/firestore";
+import { v4 as uuidv4 } from "uuid";
 
 import { insertCreateAtAndUpdatedAt, insertUpdatedAt } from "@/utils";
-import { getDoc } from "firebase/firestore/lite";
+import { SUBJECTS_COLLECTION } from "@/apis/subjects";
 
-const DAILY_COLLECTION_ORIGIN = "dailies";
-// dailies/uid/subject_id/date/taskId
+const DAILY_COLLECTION = "tasks";
 
-async function getDailyTasks(uid: string, subjectId: string, date: string) {
+async function getDailyTasks(subjectId: string, timestamp: number) {
 	const db = getFirestore();
-	const querySnapshot = await getDocs(
-		collection(db, DAILY_COLLECTION_ORIGIN, uid, subjectId, date, "list"),
+	const startDate = dayjs(timestamp).set("hour", 0).set("minute", 0).set("second", 0);
+	const endDate = dayjs(timestamp).set("hour", 23).set("minute", 59).set("second", 59);
+	const q = query(
+		collection(db, SUBJECTS_COLLECTION, subjectId, DAILY_COLLECTION),
+		where("date", ">=", startDate.toDate()),
+		where("date", "<=", endDate.toDate()),
 	);
+
+	const querySnapshot = await getDocs(q);
 
 	return querySnapshot;
 }
 
-async function addDailyTask(
-	uid: string,
-	subjectId: string,
-	date: string,
-	taskId: string,
-	task: string,
-) {
+async function addDailyTask(subjectId: string, timestamp: number, task: string) {
 	const db = getFirestore();
-	const collectionRef = collection(
-		db,
-		DAILY_COLLECTION_ORIGIN,
-		uid,
-		subjectId,
-		date,
-		"list",
-	);
+	const id = uuidv4();
+	const docRef = doc(db, SUBJECTS_COLLECTION, subjectId, DAILY_COLLECTION, id);
 
-	await addDoc(collectionRef, {
+	const data = {
 		task,
-		id: taskId,
-		finished: false,
+		id,
+		date: new Date(timestamp),
 		...insertCreateAtAndUpdatedAt(),
-	});
+		finished: false,
+	};
+
+	await setDoc(docRef, data);
+
+	return data;
 }
 
-async function modifyDailyTask(
-	uid: string,
-	subjectId: string,
-	date: string,
-	taskId: string,
-	task: string,
-) {
+async function modifyDailyTask(subjectId: string, id: string, task: string) {
 	const db = getFirestore();
-	const collectionRef = collection(
-		db,
-		DAILY_COLLECTION_ORIGIN,
-		uid,
-		subjectId,
-		date,
-		"list",
-	);
+	const docRef = doc(db, SUBJECTS_COLLECTION, subjectId, DAILY_COLLECTION, id);
 
-	const q = query(collectionRef, where("id", "==", taskId), limit(1));
-	const d = await getDocs(q);
-
-	const docRef = doc(collectionRef, d.docs[0].id);
-	await updateDoc(docRef, {
+	const data = {
 		task,
 		...insertUpdatedAt(),
-	});
+	};
+
+	await updateDoc(docRef, data);
+
+	return data;
 }
 
-async function deleteDailyTask(
-	uid: string,
-	subjectId: string,
-	date: string,
-	taskId: string,
-) {
+async function deleteDailyTask(subjectId: string, id: string) {
 	const db = getFirestore();
-	const collectionRef = collection(
-		db,
-		DAILY_COLLECTION_ORIGIN,
-		uid,
-		subjectId,
-		date,
-		"list",
-	);
-
-	const q = query(collectionRef, where("id", "==", taskId), limit(1));
-	const d = await getDocs(q);
-
-	const docRef = doc(collectionRef, d.docs[0].id);
+	const docRef = doc(db, SUBJECTS_COLLECTION, subjectId, DAILY_COLLECTION, id);
 
 	await deleteDoc(docRef);
+
+	return { id };
 }
 
-async function finishTask(
-	uid: string,
-	subjectId: string,
-	date: string,
-	taskId: string,
-	finished: boolean,
-) {
+async function finishTask(subjectId: string, taskId: string, finished: boolean) {
 	const db = getFirestore();
-	const collectionRef = collection(
-		db,
-		DAILY_COLLECTION_ORIGIN,
-		uid,
-		subjectId,
-		date,
-		"list",
-	);
+	const docRef = doc(db, SUBJECTS_COLLECTION, subjectId, DAILY_COLLECTION, taskId);
 
-	const q = query(collectionRef, where("id", "==", taskId), limit(1));
-	const d = await getDocs(q);
-
-	const docRef = doc(collectionRef, d.docs[0].id);
-
-	await updateDoc(docRef, {
-		finished,
+	const data = {
+		finished: !finished,
 		...insertUpdatedAt(),
-	});
+	};
+
+	updateDoc(docRef, data);
+
+	return data;
 }
 
 export { addDailyTask, getDailyTasks, modifyDailyTask, deleteDailyTask, finishTask };
