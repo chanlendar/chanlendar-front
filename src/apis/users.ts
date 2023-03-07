@@ -40,4 +40,14 @@ async function saveMyProfile(
 	});
 }
 
-export { updateMyProfile };
+function getUserReference(uid: string) {
+	const db = getFirestore();
+	return doc(db, USER_COLLECTION, uid).path;
+}
+
+function getUsersRefernce() {
+	const db = getFirestore();
+	return doc(db, USER_COLLECTION).path;
+}
+
+export { updateMyProfile, getUserReference, getUsersRefernce };
