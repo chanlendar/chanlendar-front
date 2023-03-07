@@ -4,6 +4,9 @@ import ReactDOM from "react-dom/client";
 import App from "@/init/App";
 import initializeReactModal from "@/init/InitializeReactModal";
 import { initializeApp } from "firebase/app";
+import weekOfYear from "dayjs/plugin/weekOfYear";
+import dayjs from "dayjs";
+dayjs.extend(weekOfYear);
 
 const firebaseConfig = {
 	apiKey: "AIzaSyDOkniQX75iO6K_fz948T40zN4PZU11Hl4",
