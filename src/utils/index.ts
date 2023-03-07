@@ -11,9 +11,10 @@ function hasNull(...datas: any[]) {
 }
 
 function insertCreateAtAndUpdatedAt() {
+	const ts = Timestamp.fromMillis(Date.now());
 	return {
-		createdAt: Timestamp.fromMillis(Date.now()),
-		updatedAt: Timestamp.fromMillis(Date.now()),
+		createdAt: ts,
+		updatedAt: ts,
 	};
 }
 

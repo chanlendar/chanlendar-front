@@ -3,11 +3,11 @@ import { DocumentData } from "firebase/firestore/lite";
 import { action, makeObservable, observable, computed } from "mobx";
 
 type Subjects = Subject[];
-type Subject = { id: string; name: string };
+type Subject = { id: string; subject: string };
 
 const initialSubject = {
 	id: "",
-	name: "",
+	subject: "",
 };
 
 export default class SubjectStore {
@@ -28,9 +28,10 @@ export default class SubjectStore {
 	subject: Subject = initialSubject;
 
 	getSubjectsFromQuerySnapshot(qs: QuerySnapshot<DocumentData>) {
+		// TODO => createdAt, updatedAt 추가
 		this.subjects = qs.docs.map((doc) => ({
 			id: doc.data().id as string,
-			name: doc.data().name as string,
+			subject: doc.data().subject as string,
 		}));
 	}
 
@@ -38,21 +39,22 @@ export default class SubjectStore {
 		return this.subjects.length === 0;
 	}
 
-	addSubject(name: string, id: string) {
+	addSubject(subject: string, id: string) {
+		console.log(subject, id);
 		this.subjects.push({
-			name,
+			subject,
 			id,
 		});
 		this.subject = {
-			name,
+			subject,
 			id,
 		};
 	}
 
-	changeSubjectName(newName: string, id: string) {
+	changeSubjectName(newSubject: string, id: string) {
 		const idx = this.subjects.findIndex((s) => s.id === id);
-		this.subjects[idx].name = newName;
-		if (this.subject.id === id) this.subject.name = newName;
+		this.subjects[idx].subject = newSubject;
+		if (this.subject.id === id) this.subject.subject = newSubject;
 	}
 
 	deleteSubject(id: string) {

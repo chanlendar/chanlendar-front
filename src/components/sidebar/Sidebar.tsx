@@ -6,7 +6,7 @@ import Subjects from "@/components/sidebar/Subjects";
 
 import useCookie from "@/hooks/useCookie";
 import useStores from "@/hooks/useStore";
-import { getUserSubjects } from "@/apis/subjects";
+import { getSubjectsByUser } from "@/apis/subjects";
 
 interface Props {}
 
@@ -15,7 +15,7 @@ const Sidebar: React.FC<Props> = () => {
 	const { subjectStore } = useStores();
 	useEffect(() => {
 		if (subjectStore.empty) {
-			getUserSubjects(getCookie("user")?.uid).then((r) => {
+			getSubjectsByUser(getCookie("user")?.uid).then((r) => {
 				subjectStore.getSubjectsFromQuerySnapshot(r);
 			});
 		}
