@@ -1,4 +1,4 @@
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import CalendarBodyGrid from "@/pages/daily/CalendarBodyGrid";
 import useStores from "@/hooks/useStore";
 import { observer } from "mobx-react";
@@ -8,7 +8,7 @@ interface Props {
 }
 
 const CalendarBody: React.FC<Props> = ({ currentDay }) => {
-	const { calendarStore } = useStores();
+	const { subjectStore } = useStores();
 	const weeks = [];
 	let days: {
 		date: number | string;
@@ -27,7 +27,7 @@ const CalendarBody: React.FC<Props> = ({ currentDay }) => {
 			date: i,
 			saturDay: start.get("day") === 6,
 			sunDay: start.get("day") === 0,
-			isSelected: start.isSame(calendarStore.selectedDay, "day"),
+			isSelected: start.isSame(dayjs(subjectStore.selectedDate), "day"),
 			hasTask: false,
 		});
 		if (start.get("day") === 6) {

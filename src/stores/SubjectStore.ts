@@ -1,6 +1,7 @@
 import { QuerySnapshot, Timestamp } from "firebase/firestore";
 import { DocumentData } from "firebase/firestore/lite";
 import { makeAutoObservable, toJS } from "mobx";
+import dayjs from "dayjs";
 
 type Subject = { id: string; subject: string; createdAt: Date; updatedAt: Date };
 type Subjects = Subject[];
@@ -74,7 +75,7 @@ export default class SubjectStore {
 		this.currentSubjectId = subjectId;
 	}
 
-	// ****Tasks****
+	// ********* Tasks *********
 	date: Date = new Date();
 	selectedDate: Date = new Date();
 	// Date Key Format - YYYYMM (string)
@@ -131,11 +132,12 @@ export default class SubjectStore {
 			false
 		);
 	}
+
 	get dailyList(): Tasks {
 		const tasks =
 			this.subjectsToDates
 				?.get(this.currentSubjectId)
-				?.get(toYearMonthString(this.date)) || [];
+				?.get(toYearMonthString(this.selectedDate)) || [];
 		const result = tasks.filter((t) => t.date.getDate() === this.selectedDate.getDate());
 
 		return result;
@@ -168,6 +170,56 @@ export default class SubjectStore {
 			.get(this.currentSubjectId)!
 			.get(this.selectedDateToString)!
 			.find((t) => t.id === taskId)!.finished = finished;
+	}
+
+	// ********* Calendar *********
+	changeMonth(month: number) {
+		this.date = dayjs(this.date).set("month", month).toDate();
+	}
+
+	changeYear(year: number) {
+		this.date = dayjs(this.date).set("year", year).toDate();
+	}
+
+	addMonth() {
+		this.date = dayjs(this.date).add(1, "month").toDate();
+	}
+
+	addYear() {
+		this.date = dayjs(this.date).add(1, "year").toDate();
+	}
+
+	subtractMonth() {
+		this.date = dayjs(this.date).subtract(1, "month").toDate();
+	}
+
+	subtractYear() {
+		this.date = dayjs(this.date).subtract(1, "year").toDate();
+	}
+
+	get displayCurrentYear() {
+		return dayjs(this.date).get("year");
+	}
+
+	get displayCurrentMonth() {
+		return dayjs(this.date).get("month") + 1;
+	}
+
+	get yearsToChoose() {
+		let firstYearToChoose = dayjs(this.date).subtract(6, "year").get("year");
+		const years = [];
+
+		for (let i = 0; i < 12; i++) {
+			years.push(firstYearToChoose);
+			firstYearToChoose++;
+		}
+
+		return years;
+	}
+
+	changeSelectedDay(date: number) {
+		if (date !== 0)
+			this.selectedDate = dayjs(this.date).clone().set("date", date).toDate();
 	}
 }
 

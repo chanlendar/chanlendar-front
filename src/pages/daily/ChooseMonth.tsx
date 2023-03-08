@@ -8,10 +8,10 @@ interface Props {
 }
 
 const ChooseMonth: React.FC<Props> = ({ onClose }) => {
-	const { calendarStore } = useStores();
+	const { subjectStore } = useStores();
 
 	const onMonthClick = (month: number) => () => {
-		calendarStore.changeMonth(month);
+		subjectStore.changeMonth(month);
 		onClose();
 	};
 

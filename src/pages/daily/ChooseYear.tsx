@@ -1,4 +1,4 @@
-import { css, useTheme } from "@emotion/react";
+import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
 import useStores from "@/hooks/useStore";
@@ -9,9 +9,9 @@ interface Props {
 }
 
 const ChooseYear: React.FC<Props> = ({ onClose }) => {
-	const { calendarStore } = useStores();
+	const { subjectStore } = useStores();
 	const onYearClick = (year: number) => () => {
-		calendarStore.changeYear(year);
+		subjectStore.changeYear(year);
 		onClose();
 	};
 
@@ -27,7 +27,7 @@ const ChooseYear: React.FC<Props> = ({ onClose }) => {
 				cursor: pointer;
 			`}
 		>
-			{calendarStore.yearsToChoose.map((year) => (
+			{subjectStore.yearsToChoose.map((year) => (
 				<Year key={year} onClick={onYearClick(year)}>
 					{year}
 				</Year>

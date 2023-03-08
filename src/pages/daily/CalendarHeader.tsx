@@ -14,7 +14,7 @@ interface Props {
 
 const CalendarHeader = ({ onClick }: React.PropsWithChildren<Props>) => {
 	const theme = useTheme();
-	const { calendarStore } = useStores();
+	const { subjectStore } = useStores();
 	return (
 		<div
 			css={css`
@@ -24,11 +24,11 @@ const CalendarHeader = ({ onClick }: React.PropsWithChildren<Props>) => {
 		>
 			<CalendarHeaderIcon
 				Icon={<ChevronDoubleLeft css={iconStyles(theme.daily.calendar.icon.fill)} />}
-				onClick={() => calendarStore.subtractYear()}
+				onClick={() => subjectStore.subtractYear()}
 			/>
 			<CalendarHeaderIcon
 				Icon={<ChevronLeft css={iconStyles(theme.daily.calendar.icon.fill)} />}
-				onClick={() => calendarStore.subtractMonth()}
+				onClick={() => subjectStore.subtractMonth()}
 			/>
 			<div
 				onClick={onClick}
@@ -45,16 +45,16 @@ const CalendarHeader = ({ onClick }: React.PropsWithChildren<Props>) => {
 				`}
 			>
 				<span>
-					{calendarStore.displayCurrentYear}년 {calendarStore.displayCurrentMonth}월
+					{subjectStore.displayCurrentYear}년 {subjectStore.displayCurrentMonth}월
 				</span>
 			</div>
 			<CalendarHeaderIcon
 				Icon={<ChevronRight css={iconStyles(theme.daily.calendar.icon.fill)} />}
-				onClick={() => calendarStore.addMonth()}
+				onClick={() => subjectStore.addMonth()}
 			/>
 			<CalendarHeaderIcon
 				Icon={<ChevronDoubleRight css={iconStyles(theme.daily.calendar.icon.fill)} />}
-				onClick={() => calendarStore.addYear()}
+				onClick={() => subjectStore.addYear()}
 			/>
 		</div>
 	);

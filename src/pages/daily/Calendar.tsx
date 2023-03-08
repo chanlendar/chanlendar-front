@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import styled from "@emotion/styled";
+import dayjs from "dayjs";
 
 import CalendarHeader from "@/pages/daily/CalendarHeader";
 import ChooseMonth from "@/pages/daily/ChooseMonth";
@@ -14,7 +15,7 @@ const Calendar: React.FC<Props> = () => {
 	const [processToChooseMonthYear, setProcess] = useState(false);
 	const [openMonth, setOpenMonth] = useState(false);
 	const [openYear, setOpenYear] = useState(false);
-	const { calendarStore } = useStores();
+	const { subjectStore } = useStores();
 
 	useEffect(() => {
 		if (processToChooseMonthYear) setOpenMonth(true);
@@ -41,7 +42,7 @@ const Calendar: React.FC<Props> = () => {
 				/>
 			)}
 			{!processToChooseMonthYear && (
-				<CalendarBody currentDay={calendarStore.currentDay} />
+				<CalendarBody currentDay={dayjs(subjectStore.date)} />
 			)}
 		</StyledLayout>
 	);

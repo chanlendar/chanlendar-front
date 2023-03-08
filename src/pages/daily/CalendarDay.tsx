@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { css, useTheme } from "@emotion/react";
 import useStores from "@/hooks/useStore";
+import { observer } from "mobx-react";
 
 interface Props {
 	children: ReactNode;
@@ -19,7 +20,7 @@ const CalendarDay: React.FC<Props> = ({
 	hasTask,
 	date,
 }) => {
-	const { calendarStore } = useStores();
+	const { subjectStore } = useStores();
 	const theme = useTheme();
 	const color =
 		(isSelected && theme.daily.calendar.item.selectedText) ||
@@ -53,7 +54,7 @@ const CalendarDay: React.FC<Props> = ({
 					border: 1px solid ${borderColor};
 					cursor: pointer;
 				`}
-				onClick={() => calendarStore.changeSelectedDay(date)}
+				onClick={() => subjectStore.changeSelectedDay(date)}
 			>
 				{children}
 			</div>
@@ -61,4 +62,4 @@ const CalendarDay: React.FC<Props> = ({
 	);
 };
 
-export default CalendarDay;
+export default observer(CalendarDay);
