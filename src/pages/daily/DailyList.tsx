@@ -1,12 +1,10 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import { autorun } from "mobx";
 import { observer } from "mobx-react-lite";
 
-import { deleteDailyTask, finishTask, getDailyTasks } from "@/apis/dailies";
+import { deleteDailyTask, finishTask, getTasksByMonth } from "@/apis/tasks";
 import useStores from "@/hooks/useStore";
 import useContextMenu from "@/hooks/useContextMenu";
-import useCookie from "@/hooks/useCookie";
 import DailyItem from "@/pages/daily/DailyItem";
 import CreationInput from "@/pages/daily/CreationInput";
 import ContextMenu from "@/components/contextMenu/ContextMenu";
@@ -18,7 +16,21 @@ interface Props {
 }
 
 const DailyList: React.FC<Props> = ({ creationMode, setCreationMode }) => {
-	const [getCookie] = useCookie();
+	const { subjectStore } = useStores();
+
+	useEffect(() => {
+		if (!subjectStore.hasDatesToTasks) {
+			subjectStore.createSubjectsToDates();
+		}
+		if (!subjectStore.hasDailyList) {
+			(async () => {
+				subjectStore.createTasksFrom(
+					await getTasksByMonth(subjectStore.currentSubjectId, subjectStore.selectedDate),
+				);
+			})();
+		}
+	}, [subjectStore.hasDatesToTasks, subjectStore.hasDailyList]);
+
 	const [contextMenu, _, onContextMenu, closeContextMenu] = useContextMenu();
 
 	const [taskId, setId] = useState("");
@@ -26,19 +38,6 @@ const DailyList: React.FC<Props> = ({ creationMode, setCreationMode }) => {
 		setId(id);
 		setTaskModifyMode(false);
 	};
-
-	const { dailyStore, subjectStore, calendarStore } = useStores();
-	useEffect(() => {
-		const disposer = autorun(async () => {
-			const querySnapshot = await getDailyTasks(
-				subjectStore.subject.id,
-				calendarStore.selectedDay.unix(),
-			);
-			dailyStore.setDailyListFrom(querySnapshot);
-		});
-
-		return () => disposer();
-	}, [subjectStore.subject.id]);
 
 	const onContextMenuClose = () => {
 		closeContextMenu();
@@ -50,37 +49,39 @@ const DailyList: React.FC<Props> = ({ creationMode, setCreationMode }) => {
 	};
 
 	const onTaskDeleteClick = async () => {
-		await deleteDailyTask(subjectStore.subject.id, taskId);
-		dailyStore.deleteTask(taskId);
+		await deleteDailyTask(subjectStore.currentSubjectId, taskId);
+		subjectStore.deleteTask(taskId);
 		onContextMenuClose();
 	};
 
 	const onTaskFinishClick = (taskId: string, finished: boolean) => async () => {
-		finishTask(subjectStore.subject.id, taskId, finished);
-		dailyStore.finishTask(taskId, finished);
+		await finishTask(subjectStore.currentSubjectId, taskId, finished);
+		subjectStore.finishTask(taskId, finished);
 	};
 
 	const [taskModifyMode, setTaskModifyMode] = useState(false);
 
 	return (
 		<Layout>
-			<Title>{subjectStore.subject.subject}</Title>
+			<Title>{subjectStore.currentSubject?.subject}</Title>
 			<List>
 				<>
 					{creationMode && <CreationInput command="ADD" setMode={setCreationMode} />}
-					{dailyStore.dailyList.map(({ id, task, finished }) => (
-						<DailyItem
-							key={id}
-							taskId={id}
-							finished={finished}
-							onContextMenu={onContextMenu(id, onChangeIdWhenContextMenuOpened)}
-							taskModifyMode={taskModifyMode && taskId === id}
-							setTaskModifyMode={setTaskModifyMode}
-							onClick={onTaskFinishClick(id, !finished)}
-						>
-							{task}
-						</DailyItem>
-					))}
+					{subjectStore.dailyList.map(
+						({ id, task, finished, date, createdAt, updatedAt }) => (
+							<DailyItem
+								key={id}
+								taskId={id}
+								finished={finished}
+								onContextMenu={onContextMenu(id, onChangeIdWhenContextMenuOpened)}
+								taskModifyMode={taskModifyMode && taskId === id}
+								setTaskModifyMode={setTaskModifyMode}
+								onClick={onTaskFinishClick(id, !finished)}
+							>
+								{task}
+							</DailyItem>
+						),
+					)}
 					<ContextMenu
 						show={contextMenu.show}
 						x={contextMenu.x}

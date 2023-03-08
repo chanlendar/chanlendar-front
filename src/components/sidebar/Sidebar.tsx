@@ -19,7 +19,7 @@ const Sidebar: React.FC<Props> = () => {
 				subjectStore.getSubjectsFromQuerySnapshot(r);
 			});
 		}
-	}, []);
+	}, [subjectStore.empty]);
 
 	return (
 		<Container>

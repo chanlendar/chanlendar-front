@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
+
 import Button from "@/components/Button";
 
 import Empty from "@/pages/daily/Empty";
@@ -12,21 +13,20 @@ import useStores from "@/hooks/useStore";
 interface Props {}
 
 const Daily: React.FC<Props> = () => {
-	const { subjectStore, dailyStore } = useStores();
+	const { subjectStore } = useStores();
 
-	const [creationMode, setCreationMode] = useState(false);
+	useEffect(() => {
+		if (subjectStore.canCreateSubjectsToDates)
+			subjectStore.createSubjectsToDatesFrom(subjectStore.subjects);
+	}, [subjectStore.canCreateSubjectsToDates]);
 
 	const onButtonClick = () => {
 		setCreationMode(true);
 	};
 
-	useEffect(() => {
-		if (subjectStore.subject.id !== "") {
-			dailyStore.initializeBySubject(subjectStore.subject.id);
-		}
-	}, [subjectStore.subject.id]);
+	const [creationMode, setCreationMode] = useState(false);
 
-	if (subjectStore.subject.id === "")
+	if (!subjectStore.currentSubject)
 		return <Empty>주제를 생성하거나, 눌러서 관리를 시작하세요!</Empty>;
 
 	return (

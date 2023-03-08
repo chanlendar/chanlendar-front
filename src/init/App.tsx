@@ -10,7 +10,6 @@ const App = () => {
 			profileStore={stores.profileStore}
 			themeStore={stores.themeStore}
 			subjectStore={stores.subjectStore}
-			dailyStore={stores.dailyStore}
 			calendarStore={stores.calendarStore}
 		>
 			<Root />

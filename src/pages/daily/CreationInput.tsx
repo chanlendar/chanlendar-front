@@ -1,14 +1,11 @@
 import { Dispatch, KeyboardEvent, SetStateAction, useEffect, useRef } from "react";
 import { useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
-import { v4 as uuidv4 } from "uuid";
-import dayjs from "dayjs";
 
 import useInput from "@/hooks/useInput";
 import useStores from "@/hooks/useStore";
-import useCookie from "@/hooks/useCookie";
 
-import { addDailyTask, modifyDailyTask } from "@/apis/dailies";
+import { addDailyTask, modifyDailyTask } from "@/apis/tasks";
 
 interface Props {
 	command: "ADD" | "MODIFY";
@@ -24,8 +21,7 @@ const CreationInput: React.FC<Props> = ({ setMode, command, taskId }) => {
 
 	const [input, setInput, onChange] = useInput();
 	const ref = useRef<HTMLInputElement>(null);
-	const [getCookie] = useCookie();
-	const { subjectStore, dailyStore, calendarStore } = useStores();
+	const { subjectStore } = useStores();
 
 	useEffect(() => {
 		if (ref.current) ref.current.focus();
@@ -35,14 +31,22 @@ const CreationInput: React.FC<Props> = ({ setMode, command, taskId }) => {
 		if (e.key === "Enter" && input !== "") {
 			if (command === "ADD") {
 				const result = await addDailyTask(
-					subjectStore.subject.id,
-					calendarStore.selectedDay.unix(),
+					subjectStore.currentSubjectId,
+					subjectStore.selectedDate,
 					input,
 				);
-				dailyStore.addTask(result.id, result.task);
+				subjectStore.addTask({
+					...result,
+					createdAt: result.createdAt.toDate(),
+					updatedAt: result.updatedAt.toDate(),
+				});
 			} else if (command === "MODIFY") {
-				await modifyDailyTask(subjectStore.subject.id, taskId!, input);
-				dailyStore.modifyTask(taskId!, input);
+				const result = await modifyDailyTask(
+					subjectStore.currentSubject!.id,
+					taskId!,
+					input,
+				);
+				subjectStore.modifyTask(result.id, result.task);
 				setMode(false);
 			}
 			setInput("");

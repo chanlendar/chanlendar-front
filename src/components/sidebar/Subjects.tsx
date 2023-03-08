@@ -1,5 +1,5 @@
 import { css, useTheme } from "@emotion/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { observer } from "mobx-react-lite";
 
 import useContextMenu from "@/hooks/useContextMenu";
@@ -35,14 +35,14 @@ const Subjects = (props: React.PropsWithChildren<Props>) => {
 	};
 
 	const onSubjectClick = (subjectId: string) => () => {
-		subjectStore.changeCurrentSubject(subjectId);
+		subjectStore.changeCurrentSubjectId(subjectId);
 	};
 
 	const onYesButtonClick = () => {
 		(async () => {
 			const data = await createSubject(getCookie("user").uid, input);
-			subjectStore.addSubject(data.subject, data.id);
-			subjectStore.changeCurrentSubject(data.id);
+			subjectStore.addSubject(data.subject, data.id, data.createdAt, data.updatedAt);
+			subjectStore.changeCurrentSubjectId(data.id);
 			setInput("");
 			setModalOpen(false);
 		})();

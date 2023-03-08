@@ -17,16 +17,19 @@ import { SUBJECTS_COLLECTION } from "@/apis/subjects";
 
 const DAILY_COLLECTION = "tasks";
 
-async function getDailyTasks(subjectId: string, timestamp: number) {
+async function getTasksByMonth(subjectId: string, date: Date) {
 	const db = getFirestore();
-	const startDate = dayjs(timestamp * 1000)
+	const startDate = dayjs(date)
+		.set("date", 1)
 		.set("hour", 0)
 		.set("minute", 0)
 		.set("second", 0);
-	const endDate = dayjs(timestamp * 1000)
+	const endDate = dayjs(date)
+		.endOf("month")
 		.set("hour", 23)
 		.set("minute", 59)
 		.set("second", 59);
+
 	const q = query(
 		collection(db, SUBJECTS_COLLECTION, subjectId, DAILY_COLLECTION),
 		where("date", ">=", startDate.toDate()),
@@ -38,14 +41,14 @@ async function getDailyTasks(subjectId: string, timestamp: number) {
 	return querySnapshot;
 }
 
-async function addDailyTask(subjectId: string, timestamp: number, task: string) {
+async function addDailyTask(subjectId: string, date: Date, task: string) {
 	const db = getFirestore();
 	const id = uuidv4();
 	const docRef = doc(db, SUBJECTS_COLLECTION, subjectId, DAILY_COLLECTION, id);
 	const data = {
 		task,
 		id,
-		date: new Date(timestamp * 1000),
+		date,
 		...insertCreateAtAndUpdatedAt(),
 		finished: false,
 	};
@@ -61,6 +64,7 @@ async function modifyDailyTask(subjectId: string, id: string, task: string) {
 
 	const data = {
 		task,
+		id,
 		...insertUpdatedAt(),
 	};
 
@@ -69,13 +73,13 @@ async function modifyDailyTask(subjectId: string, id: string, task: string) {
 	return data;
 }
 
-async function deleteDailyTask(subjectId: string, id: string) {
+async function deleteDailyTask(subjectId: string, taskId: string) {
 	const db = getFirestore();
-	const docRef = doc(db, SUBJECTS_COLLECTION, subjectId, DAILY_COLLECTION, id);
+	const docRef = doc(db, SUBJECTS_COLLECTION, subjectId, DAILY_COLLECTION, taskId);
 
 	await deleteDoc(docRef);
 
-	return { id };
+	return { id: taskId };
 }
 
 async function finishTask(subjectId: string, taskId: string, finished: boolean) {
@@ -92,4 +96,4 @@ async function finishTask(subjectId: string, taskId: string, finished: boolean) 
 	return data;
 }
 
-export { addDailyTask, getDailyTasks, modifyDailyTask, deleteDailyTask, finishTask };
+export { addDailyTask, getTasksByMonth, modifyDailyTask, deleteDailyTask, finishTask };

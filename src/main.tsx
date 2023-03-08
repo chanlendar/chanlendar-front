@@ -21,6 +21,10 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 initializeReactModal();
 
+Date.prototype.toYearMonthString = function () {
+	return `${this.getFullYear()}${this.getMonth()}`;
+};
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<React.StrictMode>
 		<App />
