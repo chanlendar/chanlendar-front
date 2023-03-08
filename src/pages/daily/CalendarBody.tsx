@@ -28,7 +28,7 @@ const CalendarBody: React.FC<Props> = ({ currentDay }) => {
 			saturDay: start.get("day") === 6,
 			sunDay: start.get("day") === 0,
 			isSelected: start.isSame(dayjs(subjectStore.selectedDate), "day"),
-			hasTask: false,
+			hasTask: subjectStore.hasTask(start),
 		});
 		if (start.get("day") === 6) {
 			weeks.push(days);

@@ -1,7 +1,7 @@
 import { QuerySnapshot, Timestamp } from "firebase/firestore";
 import { DocumentData } from "firebase/firestore/lite";
 import { makeAutoObservable, toJS } from "mobx";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 
 type Subject = { id: string; subject: string; createdAt: Date; updatedAt: Date };
 type Subjects = Subject[];
@@ -220,6 +220,20 @@ export default class SubjectStore {
 	changeSelectedDay(date: number) {
 		if (date !== 0)
 			this.selectedDate = dayjs(this.date).clone().set("date", date).toDate();
+	}
+
+	hasTask(start: Dayjs) {
+		const tasks = this.subjectsToDates
+			.get(this.currentSubjectId)
+			?.get(this.selectedDateToString);
+		return (
+			tasks?.some((t) => {
+				const d = dayjs(t.date);
+				return (
+					d.isSame(start, "year") && d.isSame(start, "month") && d.isSame(start, "day")
+				);
+			}) || false
+		);
 	}
 }
 
