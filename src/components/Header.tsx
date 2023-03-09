@@ -1,9 +1,11 @@
-import { Theme, useTheme } from "@emotion/react";
+import { css, Theme, useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Link, useLocation } from "react-router-dom";
 import { observer } from "mobx-react";
 
+import LogOut from "@/components/LogOut";
 import useStores from "@/hooks/useStore";
+import useCookie from "@/hooks/useCookie";
 import LightTheme from "@/icons/LightTheme";
 import DarkTheme from "@/icons/DarkTheme";
 
@@ -19,16 +21,25 @@ const Header: React.FC<Props> = () => {
 		themeStore.flipTheme();
 	};
 
+	const [getCookie] = useCookie();
+
 	return (
 		<Head backgroundColor={titleBackgroundColor}>
 			<Link to={"/"}>
 				<Title>Chanlendar</Title>
 			</Link>
-			{themeStore.currentTheme === "dark" ? (
-				<DarkTheme fill="#FAFAFA" onClick={onIconClick} />
-			) : (
-				<LightTheme fill="#EF5350" onClick={onIconClick} />
-			)}
+			<div
+				css={css`
+					display: flex;
+				`}
+			>
+				{getCookie("user") && <LogOut />}
+				{themeStore.currentTheme === "dark" ? (
+					<DarkTheme fill="#FAFAFA" onClick={onIconClick} />
+				) : (
+					<LightTheme fill="#EF5350" onClick={onIconClick} />
+				)}
+			</div>
 		</Head>
 	);
 };
