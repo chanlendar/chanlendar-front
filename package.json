@@ -1,8 +1,7 @@
 {
 	"name": "chanlendar",
-	"version": "1.0.0",
-	"main": "dist-electron/main/index.js",
-	"description": "Manage your task on the Desktop",
+	"version": "0.1.0",
+	"description": "Manage your task on the web",
 	"author": "Chanhee Jang <aksaksdm@naver.com>",
 	"license": "MIT",
 	"private": true,
@@ -13,7 +12,7 @@
 	},
 	"scripts": {
 		"dev": "vite",
-		"build": "tsc && vite build && electron-builder",
+		"build": "tsc && vite build",
 		"preview": "vite preview",
 		"e2e": "npx playwright test",
 		"storybook": "start-storybook -p 6006",
@@ -36,14 +35,10 @@
 		"@types/uuid": "^9.0.1",
 		"@vitejs/plugin-react": "^3.0.1",
 		"babel-loader": "^8.3.0",
-		"electron": "^22.0.3",
-		"electron-builder": "^23.6.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"typescript": "^4.9.4",
 		"vite": "^4.0.4",
-		"vite-electron-plugin": "^0.7.4",
-		"vite-plugin-electron-renderer": "^0.11.4",
 		"vite-tsconfig-paths": "^4.0.5"
 	},
 	"engines": {
