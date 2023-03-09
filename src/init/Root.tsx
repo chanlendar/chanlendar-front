@@ -5,11 +5,12 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import GlobalStyles from "@/init/GlobalStyles";
 import BaseLayoutWithChildren from "@/init/BaseLayoutWithChildren";
 import RequireAuth from "@/init/RequireAuth";
-import RequireNonUser from "./RequireNonUser";
+import RequireNonUser from "@/init/RequireNonUser";
 import UpdateUserCookieWhenExit from "@/init/UpdateUserCookieWhenExit";
 import TryLoginAutomatically from "@/init/TryLoginAutomatically";
 import Login from "@/pages/login/Login";
 import Daily from "@/pages/daily/Daily";
+import Base from "@/pages/base/Base";
 import useStores from "@/hooks/useStore";
 
 const Root = () => {
@@ -32,7 +33,7 @@ const router = createBrowserRouter([
 		path: "/",
 		element: (
 			<RequireAuth>
-				<BaseLayoutWithChildren>here is the base</BaseLayoutWithChildren>
+				<Base />
 			</RequireAuth>
 		),
 	},
