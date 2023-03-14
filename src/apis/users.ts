@@ -41,8 +41,7 @@ async function saveMyProfile(
 }
 
 function getUserReference(uid: string) {
-	const db = getFirestore();
-	return doc(db, USER_COLLECTION, uid).path;
+	return uid;
 }
 
 export { updateMyProfile, getUserReference };
