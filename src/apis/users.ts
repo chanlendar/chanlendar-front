@@ -45,9 +45,4 @@ function getUserReference(uid: string) {
 	return doc(db, USER_COLLECTION, uid).path;
 }
 
-function getUsersRefernce() {
-	const db = getFirestore();
-	return doc(db, USER_COLLECTION).path;
-}
-
-export { updateMyProfile, getUserReference, getUsersRefernce };
+export { updateMyProfile, getUserReference };
