@@ -1,6 +1,9 @@
 import { Global, css } from "@emotion/react";
 
 const style = css`
+	.firebase-emulator-warning {
+		display: none;
+	}
 	* {
 		font-family: "Spoqa Han Sans Neo", "sans-serif";
 		margin: 0;

@@ -1,11 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { initializeApp } from "firebase/app";
+import { getAuth, connectAuthEmulator } from "firebase/auth";
+import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
+import weekOfYear from "dayjs/plugin/weekOfYear";
+import dayjs from "dayjs";
 
 import App from "@/init/App";
 import initializeReactModal from "@/init/InitializeReactModal";
-import { initializeApp } from "firebase/app";
-import weekOfYear from "dayjs/plugin/weekOfYear";
-import dayjs from "dayjs";
 dayjs.extend(weekOfYear);
 
 const firebaseConfig = {
@@ -20,6 +22,14 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig);
 initializeReactModal();
+
+if (location.hostname === "localhost") {
+	const firestore = getFirestore();
+	const auth = getAuth();
+
+	connectFirestoreEmulator(firestore, "127.0.0.1", 8080);
+	connectAuthEmulator(auth, "http://127.0.0.1:9099");
+}
 
 Date.prototype.toYearMonthString = function () {
 	return `${this.getFullYear()}${this.getMonth()}`;
