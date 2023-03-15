@@ -15,6 +15,7 @@
 		"build": "tsc && vite build",
 		"preview": "vite preview",
 		"e2e": "npx playwright test",
+		"test-report": "npx playwright show-report",
 		"storybook": "start-storybook -p 6006",
 		"build-storybook": "build-storybook",
 		"emulator": "firebase emulators:start --import=./firebaseEmulatorFixtures"
